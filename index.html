@@ -1,1 +1,908 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>조연희 - Drama Curator & Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg-main); color: var(--text-main); overflow-y: scroll; padding: 3rem 0 5rem 0; }
+        
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
 
+        :root {
+            --point-color: #e50914;
+            --point-hover: #f40612;
+            --bg-main: #141414;
+            --bg-card: #181818;
+            --bg-card-hover: #2f2f2f;
+            --text-main: #e5e5e5;
+            --text-muted: #808080;
+            --border-color: #333333;
+            --border-rad-lg: 16px; 
+            --border-rad-md: 10px;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        header { background: rgba(0, 0, 0, 0.9); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #222; backdrop-filter: blur(5px); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; height: 80px; }
+        .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; color: var(--point-color); text-transform: uppercase; }
+        
+        nav.gnb { display: flex; gap: 3rem; }
+        nav.gnb a { font-weight: 500; color: var(--text-muted); position: relative; padding: 10px 0; cursor: pointer; transition: color 0.3s; }
+        nav.gnb a:hover { color: #fff; }
+        nav.gnb a.active { color: #fff; font-weight: 700; }
+        nav.gnb a.active::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 3px; background-color: var(--point-color); border-radius: 2px; }
+        
+        main { padding: 4rem 0; min-height: 80vh; }
+        .page { display: none; animation: fadeIn 0.5s ease; padding-top: 3rem; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-header { font-size: 1.6rem; font-weight: 700; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; color: #fff; }
+
+        .hero-section { display: block; margin-bottom: 3rem; }
+
+        .hero-card { 
+            background: linear-gradient(145deg, #1f1f1f, #141414); 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--border-rad-lg); 
+            padding: 3.5rem; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8); 
+        }
+        .hero-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem; line-height: 1.3; color: #fff; }
+        .hero-desc { font-size: 1.1rem; color: #b3b3b3; line-height: 1.7; word-break: keep-all; }
+        .personal-info { margin-bottom: 1.5rem; padding-left: 1rem; border-left: 4px solid var(--point-color); }
+        .info-item { font-size: 1.1rem; margin-bottom: 5px; color: #fff; font-weight: 500; }
+        .info-item span { color: var(--text-muted); margin-right: 15px; font-weight: 400; font-size: 0.9rem; text-transform: uppercase; display: inline-block; width: 60px; }
+
+        .hero-body { display: flex; gap: 3rem; align-items: flex-start; margin-top: 2rem;}
+
+        .hero-text { flex: 1; }
+
+        .hero-profile-img { width: 160px; flex-shrink: 0; border-radius: var(--border-rad-md); overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
+
+        .hero-profile-img img { width: 100%; height: auto; display: block; }
+
+        @media (max-width: 768px) {
+            .hero-body { flex-direction: column-reverse; align-items: center; text-align: center; }
+            .hero-profile-img { width: 150px; margin-bottom: 2rem; }
+            .personal-info { display: inline-block; text-align: left; }
+        }
+
+        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 600px; margin: 0 auto; }
+        .info-box { background: var(--bg-card); border-radius: var(--border-rad-md); padding: 2rem 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border: 1px solid var(--border-color); transition: all 0.3s; }
+        .info-box:hover { transform: translateY(-5px); background: var(--bg-card-hover); border-color: #555; }
+        .info-box.highlight { background: var(--point-color); border: none; color: #fff; }
+        .info-box.highlight:hover { background: var(--point-hover); border-color: transparent; }
+        .info-icon { width: 45px; height: 45px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 1.2rem; }
+
+        .tab-menu { display: flex; background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 2rem; }
+        .tab-menu li { flex: 1; text-align: center; padding: 15px 0; font-weight: 500; color: var(--text-muted); border-right: 1px solid var(--border-color); cursor: pointer; transition: 0.3s; }
+        .tab-menu li:last-child { border-right: none; }
+        .tab-menu li:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        .tab-menu li.active { background: var(--point-color); color: #fff; font-weight: 700; border-color: var(--point-color); }
+
+        .drama-list { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem; }
+        .drama-poster { background: var(--bg-card); border-radius: 4px; overflow: hidden; transition: all 0.3s; cursor: pointer; position: relative; border: 1px solid transparent; }
+        .drama-poster:hover { transform: scale(1.08); z-index: 10; border-color: var(--text-muted); box-shadow: 0 10px 20px rgba(0,0,0,0.8); }
+        .poster-img { width: 100%; aspect-ratio: 2/3; background: #222; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 10px; }
+        .poster-title { padding: 1rem; font-weight: 500; font-size: 0.95rem; text-align: center; color: #fff; background: linear-gradient(to top, #141414, transparent); position: absolute; bottom: 0; width: 100%; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+        .modal.active { display: flex; animation: fadeIn 0.3s ease; }
+        .modal-content { background: var(--bg-card); border-radius: var(--border-rad-md); width: 90%; max-width: 600px; padding: 3rem; border: 1px solid var(--border-color); box-shadow: 0 10px 40px rgba(0,0,0,0.9); text-align: left; }
+        .modal-body h3 { font-size: 2rem; margin-bottom: 0.5rem; color: #fff; font-weight: 900; }
+        
+        .drama-meta { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; font-size: 0.95rem; }
+        .drama-meta .rating { color: #46d369; font-weight: 700; } 
+        .drama-meta .cast { color: #a3a3a3; }
+        .drama-meta .cast span { color: #fff; font-weight: 500; }
+        
+        .modal-body p.plot { color: #d2d2d2; line-height: 1.7; margin-bottom: 2rem; word-break: keep-all; font-size: 1.05rem; }
+        .close-btn { padding: 12px 30px; background: var(--text-main); color: #000; border-radius: 4px; cursor: pointer; font-weight: 700; transition: 0.3s; display: inline-block; text-align: center; width: 100%; }
+        .close-btn:hover { background: #fff; }
+
+        .banner-layout { display: flex; gap: 1.5rem; margin-bottom: 4rem; }
+        .hover-review-box { position: relative; overflow: hidden; cursor: pointer; }
+        
+        .hover-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(20, 20, 20, 0.95);
+            color: #fff; padding: 2rem;
+            display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+            opacity: 0; transition: all 0.3s ease; z-index: 10;
+            backdrop-filter: blur(8px); text-align: left;
+            transform: translateY(15px);
+        }
+        .banner-main .hover-overlay { padding: 3rem; }
+        .hover-review-box:hover .hover-overlay { opacity: 1; transform: translateY(0); }
+        .review-label { color: var(--point-color); font-weight: 700; font-size: 0.9rem; margin-bottom: 10px; border: 1px solid var(--point-color); padding: 4px 8px; border-radius: 4px; display: inline-block; }
+        .hover-overlay p { color: #d2d2d2; line-height: 1.7; font-size: 1.05rem; font-weight: 400; word-break: keep-all; }
+
+        .banner-main { 
+            flex: 1.3; 
+            border-radius: var(--border-rad-lg); min-height: 400px; 
+            display: flex; flex-direction: column; justify-content: flex-end; 
+            border: 1px solid var(--border-color); 
+            background: linear-gradient(to top, rgba(20,20,20,1) 0%, rgba(20,20,20,0.2) 100%),
+                        url('https://i.namu.wiki/i/Y4YycceJzixPCEbuC3S5i_zqIAB2Ch4-ZOlxqj--hHsE0giWS-a7G4k4AJmDNa4KEUjMRnemTwO489JIA-MkFBdOlfha50auNfi6Srb2SV3vwrRBrSJwjYjy9lcrFIauAB-A8caweuFwrl6aKWOLYA.webp') center/cover no-repeat;
+        }
+        .banner-content { position: relative; z-index: 2; padding: 3rem; display: inline-block; transition: transform 0.3s; }
+        .banner-main:hover .banner-content { opacity: 0; }
+
+        .banner-side { flex: 1; display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .side-box { 
+            flex: 1; border: 1px solid var(--border-color); border-radius: var(--border-rad-lg); 
+            display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; 
+            padding: 2rem; text-align: left; transition: 0.3s; color: #fff; 
+            position: relative; overflow: hidden; min-height: 250px;
+        }
+        .side-box::before {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.6); z-index: 0; transition: 0.3s;
+        }
+        .side-box:hover::before { background: rgba(0,0,0,0.2); }
+        .side-box-content { position: relative; z-index: 1; transition: transform 0.3s; display: flex; flex-direction: column; }
+        .side-box:hover .side-box-content { opacity: 0; }
+        .side-box:hover { border-color: var(--point-color); }
+        
+        .side-box .hover-overlay p { font-size: 0.95rem; line-height: 1.5; }
+
+        #side-box-1 { background: linear-gradient(to top, rgba(20,20,20,0.9) 0%, rgba(20,20,20,0.3) 100%), url('https://i.namu.wiki/i/YxqNW1Q6hw92F57RDiJwB6hGp1LAb5OLDs8o09XSQBi4PFKgvmps37vfWQIGVwFPRmi3GPY5phGp1sZQ3NohgGEHBSfv8sYSiXXuNUluBukDGQm1dVbsVPbrMhsHP_k1-oxIweFvU2GHCA6Rz5veZA.webp') center/cover no-repeat; }
+        #side-box-2 { background: linear-gradient(to top, rgba(20,20,20,0.9) 0%, rgba(20,20,20,0.3) 100%), url('https://i.namu.wiki/i/Fx1KqXS3JBvqA5w5Jcv8t68fQup1DAeh8RhGjQ5CQOz4v3D_KA82zRPSHLafl6AIiY6JxsC0XBeUTZiL2HdErqgS5hZ-KGXuqicRFB7E_BctjtPrIKZK6CNSB2O8VpkR9qGxVUsuUIuUWHpysoDsqA.webp') center/cover no-repeat; }
+
+        .hashtag-container { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 2rem; justify-content: center; position: relative; z-index: 2; }
+        .hashtag-btn { background: var(--bg-card); color: var(--text-muted); border: 1px solid var(--border-color); padding: 12px 20px; border-radius: 30px; cursor: pointer; font-size: 0.95rem; font-weight: 500; transition: all 0.3s; }
+        .hashtag-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .hashtag-btn.active { background: var(--point-color); color: #fff; border-color: var(--point-color); font-weight: 700; }
+        
+        .hashtag-result-box { 
+            position: relative;
+            background: var(--bg-card); 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--border-rad-lg); 
+            padding: 5rem;
+            text-align: center; 
+            min-height: 380px;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            overflow: hidden;
+        }
+
+        .hashtag-bg {
+            position: absolute;
+            top: -20px; left: -20px; right: -20px; bottom: -20px;
+            background-size: cover;
+            background-position: center;
+            filter: blur(12px) brightness(0.35); /* 흐리게 + 어둡게 */
+            z-index: 0;
+            transition: opacity 0.5s ease, background-image 0.5s ease;
+            opacity: 0;
+        }
+
+        .hashtag-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
+        .hashtag-content h3 { font-size: 2.2rem; color: #fff; margin-bottom: 1.2rem; font-weight: 900; }
+        .hashtag-content p { color: #e5e5e5; line-height: 1.7; max-width: 700px; font-size: 1.15rem; font-weight: 400; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+
+        .review-container { 
+            display: flex; 
+            gap: 1.5rem; 
+            margin-bottom: 2rem; 
+        }
+
+        .review-card {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-rad-md);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .review-card:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--point-color); 
+            background: var(--bg-card-hover); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .review-drama-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--point-color);
+            color: #fff;
+            text-align: center;
+            padding: 12px 0;
+            font-weight: 700;
+            font-size: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 -5px 15px rgba(229, 9, 20, 0.4);
+            z-index: 10;
+        }
+
+        .review-card:hover .review-drama-title {
+            transform: translateY(0); 
+        }        
+        .review-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .reviewer-info { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+        .reviewer-avatar { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 50%; 
+            background: rgba(255,255,255,0.05); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.3rem; 
+            border: 1px solid var(--border-color);
+        }
+        .reviewer-name { 
+            color: #fff; 
+            font-weight: 700; 
+            font-size: 1rem; 
+            margin-bottom: 3px;
+        }
+        .reviewer-date {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        .review-stars { 
+            color: #e50914; 
+            font-size: 1rem; 
+            letter-spacing: 2px; 
+        }
+        .review-text { 
+            color: #d2d2d2; 
+            line-height: 1.6; 
+            font-size: 0.95rem; 
+            word-break: keep-all; 
+            flex-grow: 1;
+        }
+        .review-tags { 
+            display: flex; 
+            gap: 8px; 
+            flex-wrap: wrap; 
+            margin-top: 1rem; 
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .review-tags span { 
+            background: rgba(255,255,255,0.08); 
+            color: #b3b3b3; 
+            font-size: 0.75rem; 
+            padding: 4px 10px; 
+            border-radius: 20px; 
+        }
+
+        .extra-tags-container {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .extra-tag {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(4px);
+            transition: transform 0.2s ease;
+            cursor: default;
+        }
+        .extra-tag:hover {
+            transform: scale(1.05);
+        }
+        .extra-tag.genre {
+            color: #fff;
+            background: rgba(229, 9, 20, 0.8);
+            border: 1px solid var(--point-color);
+            font-weight: 700;
+        }
+        .extra-tag.related {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .header-inner { flex-direction: column; height: auto; padding: 1rem 0; gap: 1rem; }
+            nav.gnb { gap: 1.5rem; font-size: 0.9rem; }
+            .hero-section { flex-direction: column; }
+            .profile-img-box { width: 100%; aspect-ratio: 1; }
+            .info-grid { grid-template-columns: 1fr; max-width: 100%; }
+            .drama-list { grid-template-columns: repeat(2, 1fr); }
+            .banner-layout { flex-direction: column; }
+            .tab-menu { flex-wrap: wrap; border-radius: 4px; }
+            .tab-menu li { flex: 1 1 50%; border-bottom: 1px solid var(--border-color); }
+            .hashtag-result-box { min-height: 250px; padding: 3rem 1.5rem; }
+            .review-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container header-inner">
+            <div class="logo">YEONHUI</div>
+            <nav class="gnb">
+                <a href="#intro" class="nav-link active" data-target="intro">자기소개</a>
+                <a href="#drama-curation" class="nav-link" data-target="drama-curation">드라마 큐레이션</a>
+                <a href="#my-drama" class="nav-link" data-target="my-drama">드라마 추천</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" id="app">
+        <section id="intro" class="page active">
+            <div class="hero-section">
+                <div class="hero-card">
+                    <h1 class="hero-title">ABOUT ME</h1>
+                    
+                    <div class="hero-body">
+                        <div class="hero-text">
+                            <div class="personal-info">
+                                <div class="info-item"><span>Name</span> 조연희</div>
+                                <div class="info-item"><span>Birth</span> 2004.04.02</div>
+                            </div>
+                            <p class="hero-desc">
+                                안녕하세요, 배운 기술을 통해 아이디어를 시각화하고 기록하는 컴퓨터공학과 2학년 조연희입니다.<br>
+                                학과에서 전공 기초를 탄탄히 다지는 동시에 사용자가 웹사이트를 이용할 때 가장 편리하고 보기 좋은 UI/UX 디자인이 무엇일지 늘 고민하고 있습니다. 단순히 돌아만 가는 웹페이지가 아니라 시각적으로도 감각적이고 사용하기도 편한 웹을 직접 구현하고 싶습니다. 매일 배우는 것들을 기록하고 제 손으로 만들어보며 든든한 웹 개발자로 성장하는 중입니다.
+                            </p>
+                        </div>
+
+                        <div class="hero-profile-img">
+                            <img src="https://i.ifh.cc/1rPSOb.jpg" alt="조연희 프로필">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-header" style="justify-content: center; margin-top: 4rem;">Contact Info</h2>
+            <div class="info-grid">
+                <div class="info-box">
+                    <div class="info-icon">✉️</div>
+                    <h4 style="color:#fff;">Email</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); word-break: break-all;">yeonhui9385@naver.com</p>
+                </div>
+                <div class="info-box highlight">
+                    <div class="info-icon">📱</div>
+                    <h4 style="color:#fff;">Instagram</h4>
+                    <p style="font-size: 0.85rem; color: #fff;">@r8_ror__</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="drama-curation" class="page">
+            <h2 class="section-header">장르별 큐레이션</h2>
+            
+            <ul class="tab-menu" id="genre-filter">
+                <li class="active" data-genre="all">전체보기</li>
+                <li data-genre="romance">로맨스</li>
+                <li data-genre="thriller">스릴러</li>
+                <li data-genre="fantasy">판타지</li>
+                <li data-genre="life">일상/휴먼</li>
+            </ul>
+
+            <div class="drama-list" id="genre-list"></div>
+
+            <div class="modal" id="info-modal">
+                <div class="modal-content">
+                    <div class="modal-body"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="my-drama" class="page">
+            <h2 class="section-header">나의 인생 드라마</h2>
+            
+            <div class="banner-layout">
+                <div class="banner-main hover-review-box">
+                    <div class="banner-content">
+                        <span style="background: var(--point-color); color: #fff; padding: 4px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; display: inline-block;">Top Pick #1</span>
+                        <h3 style="font-size: 2.5rem; margin-bottom: 1rem; color:#fff; font-weight:900;">달의연인:보보경심려</h3>
+                        <p style="color: #b3b3b3; line-height: 1.6; max-width: 400px;">
+                            천 년의 시공간을 초월해 만난 운명적인 사랑 이야기.<br>
+                            <span style="color: var(--point-color); font-size: 0.9rem; margin-top: 10px; display: inline-block;">(커서를 올려 감상평 보기 👀)</span>
+                        </p>
+                    </div>
+                    <div class="hover-overlay">
+                        <span class="review-label">나의 감상평 ✍️</span>
+                        <p>뻔한 내용이 아닌 역사라는 거대한 흐름 속에서 개인이 느끼는 고독과 사랑의 흔적을 처절하게 그려냈습니다. 마지막회를 보고 나면 한동한 현실로 돌아오기 힘들 정도로 깊은 여운이 남습니다. 드라마는 OST가 주는 몰입감도 매우 큰데 달의연인-보보경심려만큼 ost가 좋은 드라마가 없다고 생각합니다.</p>
+                    </div>
+                </div>
+
+                <div class="banner-side">
+                    <div class="side-box hover-review-box" id="side-box-1">
+                        <div class="side-box-content">
+                            <span style="background: var(--point-color); color: #fff; padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.8rem; display: inline-block; width: fit-content;">Top Pick #2</span>
+                            <h3 style="font-size: 1.6rem; margin-bottom: 0; color:#fff; font-weight:900;">미지의 서울</h3>
+                        </div>
+                        <div class="hover-overlay">
+                            <span class="review-label">나의 감상평 ✍️</span>
+                            <p>내일은 멀었고, 오늘은 아직 모르니까, 오늘의 하루를 잘 살아보자라는 대사가 저에게 큰 위로를 주었습니다. 미지의 서울을 보는 모두가 이 대사에 위로를 받을 수 있을 것입니다.</p>
+                        </div>
+                    </div>
+                    <div class="side-box hover-review-box" id="side-box-2">
+                        <div class="side-box-content">
+                            <span style="background: var(--point-color); color: #fff; padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.8rem; display: inline-block; width: fit-content;">Top Pick #3</span>
+                            <h3 style="font-size: 1.6rem; margin-bottom: 0; color:#fff; font-weight:900;">검색어를 입력하세요 www</h3>
+                        </div>
+                        <div class="hover-overlay">
+                            <span class="review-label">나의 감상평 ✍️</span>
+                            <p>컴퓨터공학을 전공하는 학생으로서 포털 사이트 내부의 치열한 경쟁과 데이터 조작에 대한 윤리적 고민이 매우 흥미롭게 다가왔습니다. 커리어우먼 3명이 모두 다른 성격과 가치관을 가지고 있어 매력적이였습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-header">#해시태그로 찾는 맞춤 추천</h2>
+            <div class="hashtag-container">
+                <button class="hashtag-btn" data-tag="tag1">#따뜻한_힐링</button>
+                <button class="hashtag-btn" data-tag="tag2">#심장쫄깃_스릴러</button>
+                <button class="hashtag-btn" data-tag="tag3">#눈물샘_폭발</button>
+                <button class="hashtag-btn" data-tag="tag4">#로코의_정석</button>
+                <button class="hashtag-btn" data-tag="tag5">#사이다_복수극</button>
+                <button class="hashtag-btn" data-tag="tag6">#영상미_최고</button>
+                <button class="hashtag-btn" data-tag="tag7">#인생작_발견</button>
+                <button class="hashtag-btn" data-tag="tag8">#사극_로맨스</button>
+                <button class="hashtag-btn" data-tag="tag9">#타임슬립</button>
+                <button class="hashtag-btn" data-tag="tag10">#청춘_성장물</button>
+                <button class="hashtag-btn" data-tag="tag11">#오피스_격공</button>
+                <button class="hashtag-btn" data-tag="tag12">#여운이_길게남는</button>
+                <button class="hashtag-btn" data-tag="tag13">#숨막히는_긴장감</button>
+                <button class="hashtag-btn" data-tag="tag14">#K-히어로</button>
+                <button class="hashtag-btn" data-tag="tag15">#배우_연기력_갑</button>
+                <button class="hashtag-btn" data-tag="tag16">#주말_순삭_보장</button>
+            </div>
+            
+            <div id="hashtag-result" class="hashtag-result-box">
+                <div class="hashtag-bg" id="hashtag-bg"></div>
+                <div class="hashtag-content">
+                    <h3 id="hashtag-title" style="color: var(--text-muted); font-size: 1.5rem; font-weight:500;">위의 해시태그를 선택해보세요!</h3>
+                    <p id="hashtag-desc"></p>
+                    
+                    <div id="hashtag-extra-tags" class="extra-tags-container"></div>
+                </div>
+            </div>
+
+            <h2 class="section-header" style="margin-top: 4rem;">과몰입 유저들의 생생한 리뷰 💬</h2>
+            <div class="review-container">
+                
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">🥺</div>
+                            <div>
+                                <div class="reviewer-name">익명</div>
+                                <div class="reviewer-date">2026. 05. 28</div>
+                            </div>
+                        </div>
+                        <div class="review-stars">★★★★☆</div>
+                    </div>
+                    <div class="review-text">
+                        "정신과 병동 안의 환자들과 간호사들의 이야기가 너무 섬세해서 매 화 휴지 들고 봤습니다. 누구나 마음의 감기를 앓을 수 있고, 아침은 반드시 온다는 말이 정말 와닿았어요. 에피소드마다 여운이 너무 깊게 남아서 다 보고 나서도 한참 동안 멍하니 여운을 즐기게 되네요."
+                    </div>
+                    <div class="review-tags">
+                        <span>#새벽감성</span>
+                        <span>#여운가득</span>
+                        <span>#따뜻한위로</span>
+                    </div>
+                    <div class="review-drama-title">🎬 정신병동에도 아침이 와요</div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">💻</div>
+                            <div>
+                                <div class="reviewer-name">익명</div>
+                                <div class="reviewer-date">2026. 05. 25</div>
+                            </div>
+                        </div>
+                        <div class="review-stars">★★★★☆</div>
+                    </div>
+                    <div class="review-text">
+                        "가볍게 시작했다가 비주얼과 세련된 영상미에 홀려서 뚫어져라 봤습니다. 이정훈 앵커랑 여하진 배우 케미가 장난 아니에요. 과거와 현재의 사건들이 정교하게 맞물려 돌아가는 스토리 완성도가 높아요. 고구마 전개 없이 깔끔하게 흘러가서 정주행 필수로 추천해요!"
+                    </div>
+                    <div class="review-tags">
+                        <span>#영상미최고</span>
+                        <span>#스토리완성도</span>
+                        <span>#멜로장인</span>
+                    </div>
+                    <div class="review-drama-title">🎬 그 남자의 기억법</div>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">🥐</div>
+                            <div>
+                                <div class="reviewer-name">익명</div>
+                                <div class="reviewer-date">2026. 05. 20</div>
+                            </div>
+                        </div>
+                        <div class="review-stars">★★★★★</div>
+                    </div>
+                    <div class="review-text">
+                        "1화만 보려고 켰는데, 숨 막히는 텐션 때문에 결국 밤새워서 끝까지 다 봤습니다. 주인공의 소름 돋는 이면과 예측 불가능한 전개가 아주 쫄깃해요. 마냥 착하지 않은, 파괴적이면서도 처절한 여주인공의 감정선이 너무 섬세해서 마음이 저릿했습니다. 악녀인 걸 알면서도 빠져들 수밖에 없는 서사라 보는 내내 완전 과몰입했네요. 다 보고 나서도 특유의 서늘하고 묵직한 여운이 가슴에 오래 맴돕니다."
+                    </div>
+                    <div class="review-tags">
+                        <span>#연기천재</span>
+                        <span>#스릴러맛집</span>
+                        <span>#정주행필수</span>
+                    </div>
+                    <div class="review-drama-title">🎬 친애하는 X</div>
+                </div>
+
+            </div>            
+        </section>
+    </main>
+
+    <script>
+        const hashtagData = {
+            'tag1': { 
+                title: '슬기로운 의사생활', emoji: '🩺🏥👨‍⚕️', 
+                desc: '누군가는 태어나고 누군가는 삶을 끝내는, 인생의 축소판이라 불리는 병원에서 평범한 듯 특별한 하루하루를 살아가는 사람들의 이야기', 
+                img: 'https://i.namu.wiki/i/RxTGltoHN2uuwYKtI0_YOWRYPqMqF_o_35EiGw3PV3svBvdY1jNseEMP3bzUvmLe5A-eCkJWl-KS9aNporda3zbo4setXB8mRWq1z4xrdL00l1v3VY8QUh6bY0G45lb_lVafzpxIzrqqiCx19ANuHg.webp',
+                genreTags: ['#의학', '#휴먼', '#코미디'],
+                relatedTags: ['#99즈', '#밴드', '#소소한힐링']
+            },
+            'tag2': { 
+                title: '시그널', emoji: '📻⏳🚔', 
+                desc: '과거로부터 걸려온 간절한 신호로 연결된 과거와 현재의 형사들이 오래된 미제 사건을 파헤치는 스릴러', 
+                img: 'https://i.namu.wiki/i/Q2lPtJAPly5_T3VdrM66_Q0OCrNVhHLZQxUtFBvBGCsgENAyZ88T4YWcFxigzfDenSqYQF35P9umbJYC7gYhEvhVeZ3WON7e32HhcTSKxN9Mb8J6bZagskALxyVMm73sg1jCmRoirGU0h6qZCAR-hA.webp',
+                genreTags: ['#범죄', '#스릴러', '#판타지'],
+                relatedTags: ['#무전기', '#미제사건', '#용두용미']
+            },
+            'tag3': { 
+                title: '눈물의 여왕', emoji: '👑💧💍', 
+                desc: '세기의 결혼인 줄 알았으나 세기의 전쟁이 되어버린 부부의 아찔한 위기와 기적처럼 다시 시작되는 사랑 이야기', 
+                img: 'https://i.namu.wiki/i/oihepsyYCFpVx8uIxVfrhTpSUVS26xwm8QYwWqADGo48fOKbx4yqBFfBGjDxhY9QZRYVCCzuTy-Rm2WYTizwXJzlqfvksvhlgtfjZx7aAzsNRX4K-ZThAqUsi5OsZymmdEzHgiOMyL3Nb6iyrTAoXg.webp',
+                genreTags: ['#로맨스', '#가족', '#드라마'],
+                relatedTags: ['#재벌가', '#시한부', '#애증의부부']
+            },
+            'tag4': { 
+                title: '김비서가 왜 그럴까', emoji: '👔👠💐', 
+                desc: '재력, 얼굴, 수완까지 모든 것을 다 갖췄지만 자기애로 똘똘 뭉친 나르시시스트 부회장과 그를 완벽하게 보좌해온 비서의 퇴사밀당 로맨스', 
+                img: 'https://i.namu.wiki/i/-APlwi5pBvpxzXa6jmO5y2RfsOlQPvd6GMVwS6EkxbX8XOVBXs-EMkTIuLhPXrU0qB1AThxmw0NBDBsRi1y4DEH2VIH5OFxQtuteB4cQgwU_jd16_uG58jDdxQ2xeCnlebB7lkJ-kjfqFHWPWPwxHA.webp',
+                genreTags: ['#로맨틱코미디', '#오피스'],
+                relatedTags: ['#나르시시스트', '#퇴사밀당', '#웹툰원작']
+            },
+            'tag5': { 
+                title: '모범택시', emoji: '🚕🕶️👊', 
+                desc: '정의가 실종된 사회, 베일에 가려진 택시회사 무지개 운수와 택시기사 김도기가 억울한 피해자를 대신해 복수를 완성하는 사적 복수 대행극', 
+                img: 'https://i.namu.wiki/i/uqtP-YiEKX914NYWc7q_aF7rjWjG-Jiyd1rkd8-3HexxM2fF06pzvt53zwqFr3A3f9XRMsyfnjUgWFcuFYY7Y2Z-dL_myGA6wlE1aH7Fs7Q_T9-f9XAQ0o6sNgCaWj_3AJBpym3woosorAz8S92xcw.webp',
+                genreTags: ['#액션', '#범죄', '#복수극'],
+                relatedTags: ['#다크히어로', '#참교육', '#사이다전개']
+            },
+            'tag6': { 
+                title: '도깨비', emoji: '🗡️🍁🕯️', 
+                desc: '뛰어난 연출과 아름다운 OST, 캐나다 퀘벡과 한국을 오가는 환상적인 배경 속에서 펼쳐지는 쓸쓸하고 찬란한 낭만 설화', 
+                img: 'https://i.namu.wiki/i/JDYtuoYphjcv9w6i6fj3H3IPv2oUhNr0ilpvXMJ3P9DuZssGW6vZCbU52_4tOenxXkYptOwSEUwpQ3j1f8El-mmfPxOaZCnH5eYshoQw-kCg9sKvP69VsTdFcJQE-GDPT5DIyr4WOgtLAepbsrZvrw.webp',
+                genreTags: ['#판타지', '#로맨스'],
+                relatedTags: ['#전생과현생', '#브로맨스', '#겨울감성']
+            },
+            'tag7': { 
+                title: '응답하라 1988', emoji: '📼📻👨‍👩‍👧‍👦', 
+                desc: '쌍팔년도 쌍문동, 한 골목 다섯 가족의 왁자지껄 코믹 가족극', 
+                img: 'https://i.namu.wiki/i/ktKEqzUJLX2kTJVVDteUPaSQmHEcka1W7cqoI7FvZXFk_h9Gra0lUtbah3xZkkQMTIPVW7WlJ_cTGEnac3PJsI4NWTQMRr7zKXeL36MWB-FTcJczpqVSU6mdtU8unCvUyBi2yck1K1qAxUcz5GeGDQ.webp',
+                genreTags: ['#가족', '#청춘', '#코미디'],
+                relatedTags: ['#골목길추억', '#남편찾기', '#레트로']
+            },
+            'tag8': { 
+                title: '옷소매 붉은 끝동', emoji: '🌸📜👑', 
+                desc: '자신이 선택한 삶을 지키고자 한 궁녀와 사랑보다 나라가 우선이었던 제왕의 애절한 궁중 로맨스', 
+                img: 'https://i.namu.wiki/i/DIkoXyDx_FpdVuE20ayQ2HayJ7KVIkvJMb1Y7l_0C-NAuYb02wKd442aqByCzt5_Ec3lXmHGMhshW3kIXwFkLTZ6qbT3TgVIfMUw92awg68KlL7tu1HX3fLJMiOKv5leBAiDp-JpsB9jY0pEr1Vo9g.webp',
+                genreTags: ['#사극', '#로맨스', '#역사'],
+                relatedTags: ['#정조와의빈성씨', '#궁중암투', '#애절함']
+            },
+            'tag9': { 
+                title: '선재 업고 튀어', emoji: '☂️🎤⌚', 
+                desc: '자신을 살게 해줬던 아티스트의 죽음으로 절망했던 열성팬이 최애를 살리기 위해 2008년으로 돌아가는 타임슬립 구원 로맨스', 
+                img: 'https://i.namu.wiki/i/U6mwI3oqWKsvNMR7F-NSTRuF3MtKbY9iGlKGsw5HPBf7r7SXLObLe_d2ctqQNjGqWfezGMRL6pTLaqgZBXTdr6sGV9Y0I7xNRBPQRk98fHRmONlPLDKJHxCbsW9nuFbaF5IHkAowwH9Ve9J8p1XMjQ.webp',
+                genreTags: ['#타임슬립', '#청춘', '#로맨스'],
+                relatedTags: ['#쌍방구원', '#아이돌덕질', '#첫사랑']
+            },
+            'tag10': { 
+                title: '역도요정 김복주', emoji: '🏋️‍♀️🍗💙', 
+                desc: '바벨만 들던 스물한 살 역도선수에게 닥친 폭풍 같은 첫사랑을 그린 감성 청춘 드라마', 
+                img: 'https://i.namu.wiki/i/U3fRttsWCdVyiCvvEoxX0RSLYc_ciwwKqqNcpKCtJisFAKwMjcn7HH4g0J7OXpaRGyfwJ5WkpB5Nzuto3caQ0cujwuJTqkm1hQs0Va2dOacuv5SaVfe8GhJHUh1eVFUiez6Z0OmCbRQ8WcIaT_4MFw.webp',
+                genreTags: ['#스포츠', '#청춘', '#로맨틱코미디'],
+                relatedTags: ['#체대생', '#몽글몽글', '#성장통']
+            },
+            'tag11': { 
+                title: '검색어를 입력하세요 WWW', emoji: '💻👠💼', 
+                desc: '당당하게 일하는 포털사이트 여성들의 멋진 오피스 라이프와 짜릿한 로맨스', 
+                img: 'https://i.namu.wiki/i/Fx1KqXS3JBvqA5w5Jcv8t68fQup1DAeh8RhGjQ5CQOz4v3D_KA82zRPSHLafl6AIiY6JxsC0XBeUTZiL2HdErqgS5hZ-KGXuqicRFB7E_BctjtPrIKZK6CNSB2O8VpkR9qGxVUsuUIuUWHpysoDsqA.webp',
+                genreTags: ['#오피스', '#드라마', '#워맨스'],
+                relatedTags: ['#IT업계', '#걸크러시', '#어른로맨스']
+            },
+            'tag12': { 
+                title: '나의 아저씨', emoji: '🍺🎧🌙', 
+                desc: '삶의 무게를 버티며 살아가는 평범한 사람들의 묵직하고 긴 여운을 남기는 위로의 이야기', 
+                img: 'https://i.namu.wiki/i/SMdHIQmR7xqrZukIKIfvG_gqnL8RsqcDnOX3R0totTYRyxLjiln5xzri56e1M1sTO8uusWP_KPj228fpmZIdLMC_QBzsrNHTKOcwIH5Izeq-OSPxwSLpcoIcVoKF6oo-S1HfxcUEmmbOxPqY71BFTA.webp',
+                genreTags: ['#휴먼', '#드라마', '#일상'],
+                relatedTags: ['#위로와치유', '#인생작', '#명대사제조기']
+            },
+            'tag13': { 
+                title: '지금 우리 학교는', emoji: '🧟‍♂️🏫🩸', 
+                desc: '좀비 바이러스가 퍼진 고등학교에 고립된 학생들의 숨막히는 생존 사투', 
+                img: 'https://i.namu.wiki/i/Ve6_rbFilf_RQtXB6jCFs4pCIIg1tTZvFDXXV-qhLrCOB4b8v8rKylLQY-9o0avIHlDLwYQXGXLnRF7KQ1B6eoeXqtMB7GSYOWC9nHI_MU5GLQvrIt3OpWyEBE4x65BL9s78fSqBZ931xDJkgJoP7Q.webp',
+                genreTags: ['#공포', '#스릴러', '#액션'],
+                relatedTags: ['#K좀비', '#학교생존기', '#도파민러시']
+            },
+            'tag14': { 
+                title: '무빙', emoji: '🦸‍♂️⚡🦅', 
+                desc: '초능력을 숨긴 채 현재를 살아가는 아이들과 비밀을 감춘 부모들의 거대한 휴먼 액션 K-히어로물', 
+                img: 'https://i.namu.wiki/i/mhsHgKpu4kpkJ5CJqv_r9YcgnQeObtvht2w4UIlVM7YyOeu0AVon7tCDgYnmK2kCbgW3o96Koi7NSRhi9Dw9OLowdgjTh_ebohShyLp0i_KCtiUQE6FZtRtoxP596AaSvYGmH9WegSOKQX8hMbNh1w.webp',
+                genreTags: ['#SF', '#액션', '#휴먼'],
+                relatedTags: ['#초능력', '#가족애', '#한국형히어로']
+            }, 
+            'tag15': { 
+                title: '이상한 변호사 우영우', emoji: '🐳🎧⚖️', 
+                desc: '천재적인 두뇌와 자폐스펙트럼을 가진 우영우의 사랑스럽고 완벽한 대형 로펌 생존기', 
+                img: 'https://i.namu.wiki/i/CLWcjR0luHSyFCmFnrNLI4Blq8oH-cWysLWbDmYYeXFPcxiZTpU6mN8c7upPX9aGyk-FY3uWydR2BHqI7lANwwNK_ZF8Ye4WHJaZeVWvjLNLCU_uFwW4zBBeB47LDhSRcpny5uIl-QorQXlv9jth7w.webp',
+                genreTags: ['#법정', '#드라마', '#코미디'],
+                relatedTags: ['#고래', '#따뜻한시선', '#성장스토리']
+            },
+            'tag16': { 
+                title: '더 글로리', emoji: '♟️🔥🧥', 
+                desc: '유년 시절 폭력으로 영혼까지 부서진 한 여자가 온 생을 걸어 치밀하게 준비한 처절한 복수극', 
+                img: 'https://i.namu.wiki/i/lW_XhIqQX8_jNMqBeADHyBrpIPfIZ9ogq91RuH-8yhdRhug_z1O5XhxEznqAZKSqg1CAuSook1hSghxiAtQvyEnxsJ3dvfxG1VLXrgvhSy2EBMLLyS61Z1Zo6x-swdvJWjEKeMGFO9SFocjoSiMsYQ.webp',
+                genreTags: ['#스릴러', '#복수', '#드라마'],
+                relatedTags: ['#치밀한설계', '#권선징악', '#몰입감최고']
+            }
+        };
+
+        const dramaTitles = [
+            { title: '달의연인-보보경심려', genre: 'fantasy', plot: '달그림자가 태양을 검게 물들인 날. 4황자 왕소와 21세기 여인 고하진의 영혼이 미끄러져 들어간 고려 소녀 해수가 천 년의 시공간을 초월해 만난다.', cast: '이준기, 이지은, 강하늘, 홍종현', rating: '11.3%', img: 'https://i.namu.wiki/i/Y4YycceJzixPCEbuC3S5i_zqIAB2Ch4-ZOlxqj--hHsE0giWS-a7G4k4AJmDNa4KEUjMRnemTwO489JIA-MkFBdOlfha50auNfi6Srb2SV3vwrRBrSJwjYjy9lcrFIauAB-A8caweuFwrl6aKWOLYA.webp' },
+            { title: '도깨비', genre: 'fantasy', plot: '불멸의 삶을 끝내기 위해 인간 신부가 필요한 도깨비, 그와 기묘한 동거를 시작한 기억상실증 저승사자. 그런 그들 앞에 도깨비 신부라 주장하는 죽었어야 할 운명의 소녀가 나타나며 벌어지는 신비로운 낭만 설화', cast: '공유, 이동욱, 김고은, 유인나, 육성재', rating: '20.5%', img: 'https://i.namu.wiki/i/JDYtuoYphjcv9w6i6fj3H3IPv2oUhNr0ilpvXMJ3P9DuZssGW6vZCbU52_4tOenxXkYptOwSEUwpQ3j1f8El-mmfPxOaZCnH5eYshoQw-kCg9sKvP69VsTdFcJQE-GDPT5DIyr4WOgtLAepbsrZvrw.webp' },
+            { title: '검색어를 입력하세요 WWW', genre: 'life', plot: '트렌드를 이끄는 포털사이트, 그 안에서 당당하게 일하는 여자들과 그녀들의 마음을 흔드는 남자들의 리얼 로맨스.', cast: '임수정, 이다희, 전혜진, 장기용, 이재욱', rating: '4.2%', img: 'https://i.namu.wiki/i/Fx1KqXS3JBvqA5w5Jcv8t68fQup1DAeh8RhGjQ5CQOz4v3D_KA82zRPSHLafl6AIiY6JxsC0XBeUTZiL2HdErqgS5hZ-KGXuqicRFB7E_BctjtPrIKZK6CNSB2O8VpkR9qGxVUsuUIuUWHpysoDsqA.webp' },
+            { title: '미지의 서울', genre: 'life', plot: '얼굴 빼고 모든 것이 다른 쌍둥이 자매가 인생을 맞바꿔 살게 되며 벌어지는 일을 그린 드라마.', cast: '박보영, 박진영', rating: '8.4%', img: 'https://i.namu.wiki/i/YxqNW1Q6hw92F57RDiJwB6hGp1LAb5OLDs8o09XSQBi4PFKgvmps37vfWQIGVwFPRmi3GPY5phGp1sZQ3NohgGEHBSfv8sYSiXXuNUluBukDGQm1dVbsVPbrMhsHP_k1-oxIweFvU2GHCA6Rz5veZA.webp' },
+            { title: '옷소매 붉은끝동', genre: 'romance', plot: '자신이 선택한 삶을 지키고자 한 궁녀와 사랑보다 나라가 우선이었던 제왕의 애절한 궁중 로맨스 기록', cast: '이준호, 이세영, 강훈, 이덕화', rating: '17.4%', img: 'https://i.namu.wiki/i/DIkoXyDx_FpdVuE20ayQ2HayJ7KVIkvJMb1Y7l_0C-NAuYb02wKd442aqByCzt5_Ec3lXmHGMhshW3kIXwFkLTZ6qbT3TgVIfMUw92awg68KlL7tu1HX3fLJMiOKv5leBAiDp-JpsB9jY0pEr1Vo9g.webp' },
+            { title: '사랑의 불시착', genre: 'romance', plot: '어느 날 돌풍과 함께 패러글라이딩 사고로 북한에 불시착한 재벌 상속녀 윤세리와 그녀를 숨기고 지키다 사랑하게 되는 특급 장교 리정혁의 절대 극비 러브스토리를 그린 드라마', cast: '현빈, 손예진, 서지혜, 김정현', rating: '21.7%', img: 'https://i.namu.wiki/i/vDj0z6Be8G8lv8P0a_XD0AV0arBvXWw5-ljv29s_JIRwz0-HwXIW0771ouiUOC-RXRjbIUqVz5YOkY1Z7u2X0O42xUwLOdny1smziP47zpYZyhfWke1forH2nlX6uLSPwxTq_eYU9Wvyl9zyjkNzXg.webp' },
+            { title: '킹더랜드', genre: 'romance', plot: '웃음을 경멸하는 남자 구원과 웃어야만 하는 스마일 퀸 천사랑이 호텔리어들의 꿈인 VVIP 라운지 킹더랜드에서 진짜 환하게 웃을 수 있는 날을 만들어가는 이야기', cast: '이준호, 임윤아', rating: '13.8%', img: 'https://i.namu.wiki/i/Gd3GYGp0hOdKs7yfGfYoPMQ-FrAo20SE-nrI8Q3ffJ4vTsW_e53Z5QfdDL3bdcGIdjG5iR-UbJ2O3LJX5LGvndbvFL3XZ1oUdOCla8AdKRu6BsSEROP-78CfPeGB8y-JqZ8Kkvt0GYHXUMirWHd7jw.webp'},
+            { title: '엄마친구아들', genre: 'romance', plot: '오류 난 인생을 재부팅하려는 여자와 그의 살아있는 흑역사인 엄마친구아들이 벌이는 파란만장 동네 한 바퀴 로맨스', cast: '정해인, 정소민, 김지은, 윤지온', rating: '8.5%', img: 'https://i.namu.wiki/i/ZxJdXOEcIcQvquf7o5bx7_IPWtDhnRmtiyj3zDT47W9Lqdrk3rKs3CP877W-uV5mpl_uIEAB1PtV-g8TxObKME3LMtOlL9UEMUmwbOayZZbYZY1hKIjG-m9qOpGdtnnI8-UJsxsyuFy-DeBujAbxrA.webp' },
+            { title: '뷰티인사이드', genre: 'fantasy', plot: '한 달에 일주일 타인의 얼굴로 살아가는 여자와 일 년 열두 달 타인의 얼굴을 알아보지 못하는 남자의 조금은 특별한 로맨스를 그린 드라마', cast: '서현진, 이민기, 이다희, 안재현', rating: '5.3%',img:'https://i.namu.wiki/i/haJtEYxluO4smEbg-vLB19e2QvF21VLDGXcKaZMXhPXw8hXMX6BHyA0rPTZkHTHjzGXdZLG8F-Aw7YKOfPqsUmz_kCq35m7MWDFnAryBlsLCBXQZDt4TTSaQblF79bPiZPVA8Un9BaAtcg_XHBFRaQ.webp' },
+            { title: '역도요정 김복주', genre: 'romance', plot: '바벨만 들던 스물한 살 역도선수 김복주에게 닥친 폭풍 같은 첫사랑을 그린 감성 청춘 드라마', cast: '이성경, 남주혁, 경수진, 이재윤', rating: '5.4%', img: 'https://i.namu.wiki/i/U3fRttsWCdVyiCvvEoxX0RSLYc_ciwwKqqNcpKCtJisFAKwMjcn7HH4g0J7OXpaRGyfwJ5WkpB5Nzuto3caQ0cujwuJTqkm1hQs0Va2dOacuv5SaVfe8GhJHUh1eVFUiez6Z0OmCbRQ8WcIaT_4MFw.webp' },
+            { title: '선재 업고 튀어', genre: 'fantasy', plot: '만약, 당신의 최애를 구할 수 있는 기회가 온다면? 삶의 의지를 놓아버린 순간, 자신을 살게 해줬던 유명 아티스트 "류선재". 그의 죽음으로 절망했던 열성팬 "임솔"이 최애를 살리기 위해 시간을 거슬러 2008년으로 돌아간다! 다시 살게 된 열아홉, 목표는 최애 류선재를 지키는 것!', cast: '변우석, 김혜윤, 송건희', rating: '5.8%', img: 'https://i.namu.wiki/i/U6mwI3oqWKsvNMR7F-NSTRuF3MtKbY9iGlKGsw5HPBf7r7SXLObLe_d2ctqQNjGqWfezGMRL6pTLaqgZBXTdr6sGV9Y0I7xNRBPQRk98fHRmONlPLDKJHxCbsW9nuFbaF5IHkAowwH9Ve9J8p1XMjQ.webp' },
+            { title: '또! 오해영', genre: 'romance', plot: '"모든 것은 오해로 시작되었다!" 오해영이라는 동명이인의 두 여자와 그들 사이에서 미래를 보기 시작한 남자 박도경이 미필적 고의로 서로의 인생에 얽혀가는 동명 오해 로맨스', cast: '에릭, 서현진, 전혜빈', rating: '10.0%', img: 'https://i.namu.wiki/i/xP44w_gmBASpYxTVpJLgusSPeQMODk1IKjGV9dsnQGI27K1x61aTZ3HnCUXilFmZPk-Rt63hH4kVilfgaFpZB8fVEK9Rzik5qOVP-hPd3zO2pRZPtOPJ4FUL77GkUDZ9K5GCCpPvx0ePgWgTdTNbHA.webp' },
+            { title: '어쩌다 발견한 하루', genre: 'romance', plot: '여고생 단오가 정해진 운명을 거스르고 사랑을 이뤄내는 본격 학원 로맨스 드라마', cast: '김혜윤, 로운, 이재욱, 이나은, 정건주, 김영대, 이태리', rating: '4.1%', img: 'https://i.namu.wiki/i/ZidRYkiPXbW1nRSXQNSBog_Du0rNtLo5hLt2DxcR2uasaXEBuuGaRnf_wEr29kwR36g8h6Wa8sdjYuywBnUabl6qYpgpy0_mP7EExmz_u-E2ugp4VBu2Vw9oSrZYiBu0ElpVJoRK7q997f3FBpAN-w.webp' },
+            { title: '눈물의 여왕', genre: 'romance', plot: '"세기의 결혼... 세기의 전쟁?" 퀸즈 그룹 재벌 3세, 백화점의 여왕 홍해인. 용두리 이장 아들, 슈퍼마켓 왕자 백현우. 3년차 부부의 아찔한 위기와 기적처럼 다시 시작되는 사랑 이야기', cast: '김수현, 김지원, 박성훈, 곽동연, 이주빈', rating: '24.9%', img: 'https://i.namu.wiki/i/oihepsyYCFpVx8uIxVfrhTpSUVS26xwm8QYwWqADGo48fOKbx4yqBFfBGjDxhY9QZRYVCCzuTy-Rm2WYTizwXJzlqfvksvhlgtfjZx7aAzsNRX4K-ZThAqUsi5OsZymmdEzHgiOMyL3Nb6iyrTAoXg.webp' },
+            { title: '멜로가 체질', genre: 'romance', plot: '서른 살 여자 친구들의 고민, 연애, 일상을 그린 코믹 드라마', cast: '천우희, 전여빈, 한지은, 안재홍, 공명', rating: '1.8%', img: 'https://i.namu.wiki/i/RcsJUFlVJbN_kZXD35Z-Vvf0GmDqA4IA5FinsvgMpnBXVPOvioPEn5FCcsyFE5U9ImxopRkwsQP-rY8bOZPUrp1fCt7OReh_uVvLapbgwQ8Od7cO75BsgWcF_ik9WPyxl9GafLJymKdIWiSv10CfhA.webp' },
+            { title: '간 떨어지는 동거', genre: 'fantasy', plot: '999살 구미호 신우여와 쿨내나는 99년생 요즘 인간 이담이 구슬로 인해 얼떨결에 한집 살이를 하며 펼치는 비인간적 로맨틱 코미디', cast: '장기용, 이혜리, 강한나, 김도완, 배인혁', rating: '5.3%', img: 'https://i.namu.wiki/i/xJbfe41MQphm7oyorqGUCUYvknO1xglY9oGWgWV80_4tmOThXNdOosBC7C-fL7kV3rCwgl-GxjNlwZqaDO65f_xtbHJ6b6yi5M9UiP_d44ZweiUBLC1Gu5Tjy_LG-BKS1lnXcWP7_NlB5PLz07I-NA.webp' },
+            { title: '쌈, 마이웨이', genre: 'romance', plot: '세상이 보기엔 부족한 스펙 때문에 마이너 인생을 강요하는 현실 속에서도, 남들이 뭐라던 마이웨이를 가려는 마이너리그 청춘들의 골 때리는 성장로맨스를 담은 드라마', cast: '박서준, 김지원, 안재홍, 송하윤', rating: '13.8%', img: 'https://i.namu.wiki/i/yC3_wXOxup4-cidXasReOFOBg-6-DrRBx9Wzxea2y34q_N3qQa--6r5Ck51nvd-pyY9VMxJEizy6WZLwi8P4N8VBePTjGM9Zmvq-bvsQyVS5yRtz17ZooobDkK_r9toR9VF9QK22B-u1Xlv0m6tFkg.webp' },
+            { title: '그녀는 예뻤다', genre: 'romance', plot: '주근깨 뽀글머리 역대급 폭탄녀로 역변한 혜진과 초절정 복권남으로 정변한 성준, 완벽한 듯 하지만 빈틈 많은 섹시녀 하리, 베일에 가려진 넉살끝판 반전남 신혁, 네 남녀의 재기발랄 로맨틱 코미디', cast: '황정음, 박서준, 고준희, 최시원', rating: '18.0%', img: 'https://i.namu.wiki/i/xm4q4mK5p9OMlDErc36lEox0OmyuAXVBHy3xTtDOCT5xcejm73A1komi1x7QEbRD6TqRxFgwFYBrZNqGfGYnaM534qx4-m7yfRS4dVwTQNmADSPgyxfBwpaGnXe2eE3m1cyr3tTiO-o6CjFukEUL9g.webp' },
+            { title: '상속자들', genre: 'romance', plot: '부유층 고교생들의 사랑과 우정을 그리는 청춘 트렌디 드라마', cast: '이민호, 박신혜, 김우빈, 김지원, 강민혁, 정수정, 강하늘, 박형식, 최진혁', rating: '25.6%', img: 'https://i.namu.wiki/i/fRgLtUR3BIoSN2LjJD4UrHwo5Vdog23WwWRmO7q4Zeabml5133wdCGOBEWnB5dm1seiT9xNDi6Xav6DFvqXGpwIr5sv6mw5fnzX9aZXWD6nviDqg2nc9uARbo8l1ufajh0TwNuZSWbnZzUl5weWKGg.webp' },
+            { title: '닥터스', genre: 'romance', plot: '과거의 상처를 딛고 의사가 된 두 남녀가 여러 인간 군상을 만나며 성장하고, 평생 단 한번뿐인 사랑을 시작하는 휴먼 메디컬 드라마', cast: '김래원, 박신혜, 윤균상, 이성경', rating: '21.3%', img: 'https://i.namu.wiki/i/XOVceWIYIIeK30WVywasMD6RMP-UBpssw96kLNefMoHELqrg_K0sJE6jDUipR382_Emz7C7IKt3w_D7NzsD0cWVQpOPyYnoNoIjcsFtdw3izzpYKAYDpoMqwH7nnQONqC9dyfd6LuyceTuZEDMKb5g.webp' },
+            { title: '김비서가 왜그럴까', genre: 'romance', plot: '재력, 얼굴, 수완까지 모든 것을 다 갖췄지만 자기애로 똘똘 뭉친 나르시시스트 부회장과 그를 완벽하게 보좌해온 비서의 퇴사밀당 로맨스', cast: '박서준, 박민영', rating: '8.7%', img: 'https://i.namu.wiki/i/-APlwi5pBvpxzXa6jmO5y2RfsOlQPvd6GMVwS6EkxbX8XOVBXs-EMkTIuLhPXrU0qB1AThxmw0NBDBsRi1y4DEH2VIH5OFxQtuteB4cQgwU_jd16_uG58jDdxQ2xeCnlebB7lkJ-kjfqFHWPWPwxHA.webp' },
+            { title: '위대한 유혹자', genre: 'romance', plot: '청춘남녀가 인생의 전부를 바치는 것인 줄 모르고 뛰어든 위험한 사랑 게임과 이를 시작으로 펼쳐지는 위태롭고 아름다운 스무 살 유혹 로맨스', cast: '우도환, 박수영, 문가영, 김민재', rating: '3.6%', img: 'https://i.namu.wiki/i/rR362sqK8c0lbF4aIwP_gwIap6URqfSFZR_DDUplMMSttgbeVXQZfWtOB43seMsHhVMmaOVNOC8ImcSXdNlj9L7LHGs0bJ1-E26dmONAkLHMVY_6PYL8A59-sbgxtD3qmHVxQhUv6oeehSEBNmHAig.webp' },
+            { title: '그녀의 사생활', genre: 'romance', plot: '직장에선 완벽한 큐레이터지만 알고보면 아이돌 덕후인 성덕미가 까칠한 상사 라이언을 만나며 벌어지는 본격 덕질 로맨스', cast: '박민영, 김재욱, 안보현', rating: '3.1%', img: 'https://i.namu.wiki/i/Am4Z8s65RMHcqG9XYIoakFDt0tQmFuoEztUsC-hsOxNAgwWCA9wjPO10AAYZok8hfFJlbbLZZRXuJQww7ite3d3Sn4Kfb0v1aHYa51_HV_ATIm-PoGBzd-xnnJnosU8eErCQsyX2EVppyHtpC3en8w.webp' },
+            { title: '그놈은 흑염룡', genre: 'romance', plot: '새로 온 본부장에게서 최악의 첫사랑, 흑염룡의 기운이 느껴진다? 흑역사에 고통받는 본부장 킬러 팀장 백수정과 가슴에 흑염룡을 품은 재벌 3세 본부장 반주연의 봉인해제 로맨스', cast: '문가영, 최현욱, 임세미, 곽시양', rating: '5.1%', img: 'https://i.namu.wiki/i/kmzZBBO5j2fwLUS3mgL2Z3Do86ZLAOIamX9NTlOIDwIozYeeMqtaXu63LeQ5xNiJsE9HkSRuEko4HLBM1goxvyXpH6M7LfVPP6e3EBVyzs3gPJRhCT9I6KKIk07GvZ4UJV6JI3jujGuErSm9DsWRSA.webp' },
+            { title: '일타스캔들', genre: 'romance', plot: '사교육 전쟁터에서 펼쳐지는 국가대표 반찬가게 열혈 사장과 대한민국 수학 일타 강사의 달콤 쌉싸름한 로맨스', cast: '전도연, 정경호, 노윤서', rating: '17.0%', img: 'https://i.namu.wiki/i/Nu6Ah0GA-fGaoPcujtyad0e0MXSuoqYZt4A-AgiWQFRW4IxSDvPDxzzuBQuwdWWEdPV0Lu9PnGKyOf7YyWssaneljeKiOdia5oiVxJldBiyWEePrrDf0ZpWULb1uYUsbyabzhUhZ7PjaqV8V-DvAFw.webp' },
+            { title: '첫, 사랑을 위하여', genre: 'romance', plot: '예상치 못한 인생 2막을 맞이한 싱글맘과 의대생 딸. 내일이 아닌 오늘의 행복을 살기로 한 그들을 찾아온 끝이 아닌 첫, 사랑의 이야기!', cast: '염정아, 박해준, 최윤지, 김민규', rating: '4.4%', img: 'https://i.namu.wiki/i/BoyaDc_ATKYm-MEHEYO5DDd_BNBsC83lGGnY-tlEUBY25ZZzWFhl4LIs1spJPFTOGrzxnKuro1sAHdVqDCDvL-_as9aLo2ud_ayY_c5E34q9NYLrjaNWCEqcd41ib04CqgmMeJ2i7Ulljbq4llOsGA.webp' },
+            { title: '알고있지만,', genre: 'romance', plot: '사랑은 못 믿어도 연애는 하고 싶은 여자 유나비와 연애는 성가셔도 썸은 타고 싶은 남자 박재언의 로맨스를 그린 드라마', cast: '한소희, 송강 ', rating: '2.2%', img: 'https://i.namu.wiki/i/x1hdQ-198jVLPE6q87yeaFIhmuKWzcGl175DIqAgHOxeXE-8P_XjIMvzHQtoKp43qtLLE6OTaGS5WIZSyVLDxXcgZK3gnCJ5BTIlt2Cfy_AVPMhKU50g59eOa_w83xCWVeInXsvwB0RtHqjJt0yBtA.webp' },
+            { title: '견우와 선녀', genre: 'romance', plot: '죽을 운명을 가진 소년과 이를 막으려는 MZ무당 소녀, 열여덟 청춘들의 거침없는 첫사랑 구원 로맨스', cast: '조이현, 추영우, 차강윤, 추자현', rating: '4.9%', img: 'https://i.namu.wiki/i/wS-_5p7krCTV1NRttewqQiOnt-t2myZsWvNAx6iJDwytDA_psWOcYq4DR64dMFmD4h9IQtAfAzEz8sevSEgJD7t_EPTbOoVkR_IhKEZOoJu3atvGlDUDibO7bOiFnDvr32GwmyNb06UIHxqb1yaKQQ.webp' },
+            { title: '힘쎈여자 도봉순', genre: 'fantasy', plot: '선천적으로 어마무시한 괴력을 타고난 도봉순이 세상 어디에도 본 적 없는 똘끼충만한 안민혁과 정의감에 불타는 인국두를 만나면서 벌어지는 세 남녀의 힘겨루기 로맨스', cast: '박보영, 박형식, 지수', rating: '9.7%', img: 'https://i.namu.wiki/i/qS26ZUcGfw8mJAn_BgvyZs_h5E8DT7GZjc2rDLhiGC876b9zr2ZAedOYkTwWlEPx6R4ZJy5QH4HgE9gZh7bYdpDnPiZ87dLuxlelyCiy9K-CvO_aRuZzReviUNGyr8mDbsnJ61e8TP8RzKN6N-i1mg.webp' },
+            { title: '힘쎈여자 강남순', genre: 'fantasy', plot: '선천적으로 어마무시한 괴력을 타고난 3대 모녀가 강남을 중심으로 벌어지는 신종마약범죄의 실체를 파헤치는 글로벌 쓰리(3) 제너레이션 프로젝트', cast: '이유미, 김정은, 김해숙, 옹성우, 변우석', rating: '10.4%', img: 'https://i.namu.wiki/i/oKcxrIY8_nAOWI-o_FC4KfBTqsZaj1sv9FcKXpuhMwSeXtUv0FHbrJ3DjbvSbbraiCaBGNi8CwbtAXQEkayUVfu7KhgFxU-NS9BvroPlh9HdshZIt8-lbWX4tRpnhZLg79N3G1_iC3b9qMNtrgQnWw.webp' },
+            { title: '사이코메트리 그녀석', genre: 'fantasy', plot: '비밀을 마음속에 감춘 윤재인과 상대의 비밀을 읽어내는 사이코메트리 능력을 지닌 이안의 초능력 로맨스릴러.', cast: '박진영, 신예은', rating: '2.8%', img: 'https://i.namu.wiki/i/9cxisAKSkjSQVAU_NB19K64J2MO_kj1bNPRgTWhU9G0kKjRN9EfDOcMdtUkqTywx5C12ObDVTMFghxxvcxSW58qBGcA__2itMmN7zdxtw8JAGPrg6x0YUVFqGb_u2a49YEBbT5ThH7t5GtbJDjd90Q.webp' },
+            { title: 'W', genre: 'fantasy', plot: '현실 세계의 초짜 여의사 오연주가 우연히 인기 절정 웹툰 W에 빨려 들어가, 주인공 강철을 만나 로맨스가 싹트면서 다양한 사건이 일어나는 로맨틱 서스펜스 멜로 드라마', cast: '이종석, 한효주, 김의성', rating: '13.8%', img: 'https://i.namu.wiki/i/YSlhLB91rbYDFTKVtZ0nzebeox14s2Bmqb9SWS1TttXuDWdzI03PfHc-UF9z-JnKQBoDGH020WTmTrRQ4ZYA5A1uWNn6lBMSsbQPdmlMcLOXlu7KvCVhZcETDk0irKZdnxn4FEWofm_97d5ChfCdew.webp' },
+            { title: '푸른바다의 전설', genre: 'fantasy', plot: '우리나라 최초의 야담집인 어우야담에 나오는 인어 이야기를 모티브로 한 판타지 로맨스 드라마', cast: '전지현, 이민호 ', rating: '21.0%', img: 'https://i.namu.wiki/i/JUD2gFCWpgibFSUIcN5GOIeuI1S4Hsbf4dxszfEU966qtKK9Z5kip95295nGS6UwiGJjwhuHJznovyRdrHF8kUfOiTA6lxjv0UNVSfkS8Zd0R2q8NXEj93Fw6irUDmxwXYwZH-15rlQeGdaAVDilxw.webp' },
+            { title: '호텔델루나', genre: 'fantasy', plot: '엘리트 호텔리어가 운명적인 사건으로 호텔 델루나의 지배인을 맡게 되면서 달처럼 고고하고 아름답지만 괴팍한 사장과 함께 델루나를 운영하며 생기는 특별한 이야기', cast: '이지은, 여진구, 표지훈, 강미나', rating: '12.0%', img: 'https://i.namu.wiki/i/AwSwzON7e8qfqkR1rvbYJLviMkKvv8EPdisFjTQR0z9HKjiqyl3VbMEkYtG-uW2ywwF6l4LiVB9Yn-o_GRjPzFROu8O6TfGDKjaSosZelwA-HpEwi76mm2Q2OI94duGE-lNQ9F4uO08Gb7Fdk9SdAQ.webp' },
+            { title: '환혼', genre: 'fantasy', plot: '역사에도 지도에도 존재하지 않은 대호국을 배경으로, 영혼을 바꾸는 환혼술로 인해 운명이 비틀린 주인공들이 이를 극복하고 성장해가는 판타지 로맨스 활극', cast: '이재욱, 정소민, 황민현', rating: '9.3%', img: 'https://i.namu.wiki/i/xhEbu0OWHc4LAe27W0VrhpPCmG-l2nVRD5iTVnnwtQyxvSbonQgA-jxqWEKGVdAFTDrMhyR2NfoWT2k9g3_eHParOoSjqFU3oFBXy4L9cHxSUYQkYhaEEReAHAPC5-wI0lE-6uyIcte_Jngb3FB1kA.webp' },
+            { title: '환혼:빛과 그림자', genre: 'fantasy', plot: '역사에도 지도에도 존재하지 않은 대호국을 배경으로, 영혼을 바꾸는 환혼술로 인해 운명이 비틀린 주인공들이 이를 극복하고 성장해가는 판타지 로맨스', cast: '이재욱, 고윤정, 황민현', rating:'9.7%', img: 'https://i.namu.wiki/i/Ptwyy1qDHHd99hD5C8EdybdEWKXy0hCOK0TdYNRVj3er_DqZ_O-st0BB-rs_L1J55CQquQ5jGa2IApfSbRZ4HYnbY2FFXv1qV1_KMWmoxbT1RWI7lSMn7fSaaZzaE2d-729LsMBGDOCGNj8KDYnu9g.webp' },
+            { title:'폭군의 셰프', genre:'fantasy', plot:'최고의 순간 과거로 타임슬립한 셰프가 최악의 폭군이자 절대 미각 소유자인 왕을 만나며 벌어지는 서바이벌 판타지 로코', cast:'임윤아, 이채민, 강한나', rating:'17.1%', img:'https://i.namu.wiki/i/gTZ8m7hO_vvtiMr44SBC3B4H4SEeySZ32tUcsd08A4Wy6CdW292ScpjFhHkgjJv4Kd7vMbYEXH-xbZyOg0-NrDfqrluKtOb9l3FZpL_OTmGArCZOcJzOHFA2XymNU8ua98ayRJJYYy2cv4KGBLSFVQ.webp' },
+            { title:'친애하는 X', genre:'thriller', plot:'지옥에서 벗어나 가장 높은 곳으로 올라가기 위해 가면을 쓴 여자 백아진 그리고 그녀에게 잔혹하게 짓밟힌 X들의 이야기', cast:'김유정, 김영대, 김도훈, 이열음', rating: '(OTT)', img:'https://i.namu.wiki/i/TDTHpeDgsObKRMW7ecw-s7kTFFkeoKuUFVLvEnR_5SM8JYypYYyEDVrTuDqx-S6ziEmKYhT6OnV71D5XocJ7yqzXXb47mbzW22ZIe16l8bfiqFPdY80ynMTtvFuYmI6l0p3pti9U0ptrP_F9F4JrQw.webp' },
+            { title: '방과 후 전쟁활동', genre: 'thriller', plot: '하늘을 뒤덮은 괴생명체의 공격에 맞서 싸우기 위해 입시 전쟁이 아닌 진짜 전쟁을 시작한 고3 학생들의 이야기', cast: '신현수, 이순원, 임세미, 안도규', rating: '(OTT)', img: 'https://i.namu.wiki/i/GO3lOBYCJqcg-_5ti7ZK040L09amJTYHYmRrSppjbBd9JZitaGC4X60MHs1dVQhJjGcPhqQS5b0rm9NUmDOIuxcifiDbHnYeXsflNp49-gPO77D8Xhs06N741qG-JYgJ_02bro0wXN6D5XDAOEwpxQ.webp' },
+            { title: '피라미드 게임', genre: 'thriller', plot: '한 달에 한 번 비밀투표로 왕따를 뽑는 백연여고 2학년 5반, “가해자, 피해자, 방관자”가 모두 섞여버린 그곳에서 점점 더 폭력에 빠져드는 학생들의 잔혹한 서바이벌 서열 전쟁', cast: '김지연, 장다아, 류다인, 신슬기, 강나언', rating: '(OTT)', img: 'https://i.namu.wiki/i/GdgqCH_2OST3jBTSs3WWl8cVb2n0_quYupKhWBt7N8xKi0-fp1WEDNmfTpGW4o-_kgc5hFCyYjUxlg_2EOV1cMfOpwtk85hyXSPwdKefq7bfFkH_nHD8Az1bhUHlYH92ROkZ6BsUN3liAwJrETR6dg.webp' },
+            { title: '보이스', genre: 'thriller', plot: '범죄 현장의 골든타임을 사수하는 112 신고센터 대원들의 치열한 기록을 그린 드라마', cast: '이하나, 장혁, 김재욱', rating: '5.7%', img: 'https://i.namu.wiki/i/Fnu5sCwP_wEy_htmbK8u1HLZJoke0y4KZHDR_zFcfA-nxc1bM12N9rGJ307QFK1Y71HmVt5JIDnYsjY0G_37FSCED_MCvSPK_PSHKxuKfDzCMvX6281LVz6i4exkib-Xl0vlCBM--MRwvmnw3aYcGw.webp' },
+            { title: '시그널', genre: 'thriller', plot: '"우리의 시간은 이어져있다." 과거로부터 걸려온 간절한 신호(무전)로 연결된 현재와 과거의 형사들이 오래된 미제 사건들을 다시 파헤친다!', cast: '이제훈, 김혜수, 조진웅', rating: '12.5%', img: 'https://i.namu.wiki/i/Q2lPtJAPly5_T3VdrM66_Q0OCrNVhHLZQxUtFBvBGCsgENAyZ88T4YWcFxigzfDenSqYQF35P9umbJYC7gYhEvhVeZ3WON7e32HhcTSKxN9Mb8J6bZagskALxyVMm73sg1jCmRoirGU0h6qZCAR-hA.webp' },
+            { title: 'SKY 캐슬', genre: 'thriller', plot: '대한민국 상위 0.1%가 모여 사는 SKY 캐슬 안에서 남편은 왕으로, 제 자식은 천하제일 왕자와 공주로 키우고 싶은 명문가 출신 사모님들의 처절한 욕망을 샅샅이 들여다보는 리얼 코믹 풍자 드라마', cast: '염정아, 김서형, 이태란, 정준호, 최원영', rating: '23.8%', img: 'https://i.namu.wiki/i/mV1L1FWLdPm4qmwqDt3NIopeN0Ooeqmkn079pwoYDZQVPMhDmMf2epJoX-95Jpr0O_-P5ZL1L7iQC6KmWVno8gbfUZM2qwWgVu0a0-j8KF3vS1UREhab25BaOt9JULgp4FDzr40K_GP-SXCKbnEIQA.webp' },
+            { title: 'VIP', genre: 'thriller', plot: '백화점 상위 1% VIP 고객을 관리하는 전담팀 사람들의 비밀스러운 프라이빗 오피스 멜로', cast: '장나라, 이상윤, 이청아, 곽선영, 표예진, 신재하', rating: '15.9%', img: 'https://i.namu.wiki/i/rsXvrAUXiysqIY7QMCqyvTp4ESl-k3M7uEVqR0zKb7bhfEdmh7ATZICQJpBqdEW4k1SROsgJ83BFrQlaz62IE7p7pUI2jVn-D6b5UNyHaD44PPZs65Yhwh_gssytVmZkWEdJbLUO0SmCygtn4dF88g.webp' },
+            { title: '황후의 품격', genre: 'thriller', plot: '어느 날 갑자기 신데렐라가 돼 황제에게 시집온 명랑 발랄 뮤지컬 배우가 궁의 절대 권력과 맞서 싸우다가 대왕대비 살인사건을 계기로 황실을 무너뜨리고 진정한 사랑과 행복을 찾는 이야기', cast: '장나라, 최진혁, 신성록, 이엘리야, 신은경', rating: '17.9%', img: 'https://i.namu.wiki/i/RFc7pf2QctvSkj58X31HqEyjZdL8fp-itBtPdVR9SgNKRIighYqpPb1oyuOB9mNZTA3-4cW6krLVaD0Mw0vyOAWpZKFcwqK0ctO8BGYBWD28SB6IHQoJoFulks9lEdzd3CP51MAQaXvJ4Y_PMWgu5Q.webp' },
+            { title: '굿보이', genre: 'thriller', plot: '특채로 경찰이 된 메달리스트들이 메달 대신 경찰 신분증을 목에 걸고 비양심과 반칙이 판치는 세상에 맞서 싸우는 코믹 액션 청춘 수사극', cast: '박보검, 김소현, 오정세, 이상이, 허성태', rating: '8.1%', img: 'https://i.namu.wiki/i/_5e9SNOi9OAOwyYZsptJ2JfgLFE8PbzNegWHRHUzLKWzEEHkSk_IGyHChpPG9VMlyRdhjEjuhIvp1Lr_bsVzS7zmDgdL-pBGe_rx6OgraY8I4-gr6GUV-TxhQ39b0MChaghguD_ZoTRQ6IGIn41oXg.webp' },
+            { title: '프로보노', genre: 'life', plot: '출세에 목맨 속물 판사, 본의 아니게 공익변호 세 되다(?)! 초대형 로펌 구석방, 매출 제로 공익팀에 갇힌 전직 판사의 좌충우돌 휴먼 법정물', cast: '정경호, 소주연, 이유영, 윤나무, 서혜원, 강형석', rating: '10.0%', img: 'https://i.namu.wiki/i/pqYHOI5EJ1OEegx4o_rygdmiNciYYow-otgs3HGcXKP9hvEHa2tEgQI-PwLCAEw28FlJUUK5Mf0onOAJ6Q-BK21MX4w1Hfo5gGyK1j7YWTNuyKhLegAm1pNzxkCFGxF225t2hUA3U2VJM-8kF3a7EQ.webp' },
+            { title: '서른, 아홉', genre: 'life', plot: '마흔을 코앞에 둔 세 친구의 우정과 사랑, 삶에 대한 깊이 있는 이야기를 다루는 현실 휴먼 로맨스 드라마', cast: '손예진, 전미도, 김지현, 연우진, 이무생', rating: '8.1%', img: 'https://i.namu.wiki/i/sYJZQS2vng7SKhWI0TrjSyTkv09qQMyv1baNAnyz2wpTZISc9ODb45JdnBOk-BUI_OzwLHgqrK6pZwVIk9khGX4AbN9OqlcRo9Pu72ZgSymehA_b9cuzJSui_A5uWemLQb1k7NQxVmUCvY8O4i-fTg.webp' },
+            { title: '언더커버 하이스쿨', genre: 'life', plot: '고종 황제의 사라진 금괴의 행방을 쫓기 위해 고등학생으로 위장 잠입한 국정원 요원의 좌충우돌 N차 고딩 활약기', cast: '서강준, 진기주, 김신록', rating: '8.3%', img: 'https://i.namu.wiki/i/S5ObY6q6-qWXAjD7fYdOTs96MHQfUemgpy7BPCFhznghhcEcKvSEvA8CtELGOu-C9i-HXIRcMAGx0S1rg9ZZfIHFRzVnLOdnPW0y6xM12RnMbZ-1PhgLFlioUGPwUraytJUDXy4SSdH2ivWOPZ-Vig.webp' },
+            { title: '언더커버 미쓰홍', genre: 'life', plot: '1990년대 세기말, 30대 엘리트 증권감독관 홍금보가 수상한 자금의 흐름이 포착된 증권사에 20살 말단 사원으로 위장취업하며 벌어지는 좌충우돌 레트로 오피스 코미디', cast: '박신혜, 고경표, 하윤경, 조한결', rating: '13.1%', img: 'https://i.namu.wiki/i/FvnejGI_vcnWQx7BocWN-SMCaLhU6XumMK7KAUPQusntTUMefJSgQJLGhDUE_rcF6TVXRbGObsbcPVhBK616WK3f1tFnsC2KSSisqDZOtl1SMJu9Mahx1SWTYCJVMe18i7ZaonkqVs8YVFZ2zh218w.webp' },
+            { title: '서초동', genre: 'life', plot: '매일 서초동 법조타운으로 출근하는 어쏘 변호사(법무법인에 고용되어 월급을 받는 변호사) 5인방의 희로애락 성장기', cast: '이종석, 문가영, 강유석, 류혜영, 임성재', rating: '7.7%', img: 'https://i.namu.wiki/i/OyA5dWeIKizhKdCpU89rSfSZQ6kmsbZ8_Ye_Rxiq64nYnKdKEEa8-Uf6JoXh9aeZLN_7GNCmpW64xUuj9NK4pHxZ7QM_24rJbjz3J3uKD7lkH1wb39iZu3RHjCxk5Hq_Hc9fACCJyF3xBz9-OTExjQ.webp' },
+            { title: '응답하라 1988', genre: 'life', plot: '쌍팔년도 쌍문동, 한 골목 다섯 가족의 왁자지껄 코믹 가족극', cast: '성동일, 이일화, 라미란, 김성균, 최무성, 김선영, 유재명, 류혜영, 이혜리, 고경표, 류준열, 박보검, 안재홍, 이동휘, 최성원, 김설', rating: '18.8%', img: 'https://i.namu.wiki/i/ktKEqzUJLX2kTJVVDteUPaSQmHEcka1W7cqoI7FvZXFk_h9Gra0lUtbah3xZkkQMTIPVW7WlJ_cTGEnac3PJsI4NWTQMRr7zKXeL36MWB-FTcJczpqVSU6mdtU8unCvUyBi2yck1K1qAxUcz5GeGDQ.webp' },
+            { title: '조립식 가족', genre: 'life', plot: '10년은 가족으로 함께 했고, 10년은 남남으로 그리워했던 세 청춘이 다시 만나 펼쳐지는 로맨스', cast: '황인엽, 정채연, 배현성, 최원영, 최무성', rating: '3.7%', img: 'https://i.namu.wiki/i/pSqRNV1wWcB1qGMEafW5FTDBV-xc14z8Pfcj0Y_fC7vQAsSjyU8hZk9a4tozV4tQDZfjrkkeqwoNaQR-Qyj-zVRRW76ajQH0qHrVJJh__iryOTEIJ6BsJSGosmLy4gbiRfrPoBLB3oEGFtZqjeMjHA.webp' },
+            { title: '슬기로운 의사생활', genre: 'life', plot: '누군가는 태어나고 누군가는 삶을 끝내는, 인생의 축소판이라 불리는 병원에서 평범한 듯 특별한 하루하루를 살아가는 사람들과 눈빛만 봐도 알 수 있는 20년지기 친구들의 케미스토리를 담은 드라마', cast: '조정석, 유연석, 정경호, 김대명, 전미도', rating: '14.1%', img: 'https://i.namu.wiki/i/RxTGltoHN2uuwYKtI0_YOWRYPqMqF_o_35EiGw3PV3svBvdY1jNseEMP3bzUvmLe5A-eCkJWl-KS9aNporda3zbo4setXB8mRWq1z4xrdL00l1v3VY8QUh6bY0G45lb_lVafzpxIzrqqiCx19ANuHg.webp' },
+            { title: '백번의 추억', genre: 'life', plot: '1980년대 100번 버스 안내양 영례와 종희의 빛나는 우정, 그리고 두 친구의 운명적 남자 재필을 둘러싼 애틋한 첫사랑을 그린 뉴트로 청춘 멜로 드라마', cast: '김다미, 신예은, 허남준, 김정현', rating: '8.1%', img: 'https://i.namu.wiki/i/w1y5D6iLXsmf6vOQSmO_V0NCgs4reqDSbOIcLMRizuHybDZuH57gSXaEkbJhsJf0WY2_J8xw9qOG87RVJLWMLStijkYMUYt19-K_A9Ts8rl22zw6OpL3NpQmF3knBhbq-BlXJJDQL7UZGUVXNOKGMA.webp' },
+            { title: '언젠가는 슬기로울 전공의생활', genre: 'life', plot: '언젠가는 슬기로울 의사생활을 꿈꾸는 레지던트들이 입덕부정기를 거쳐 성장해 나가는 과정을 담은 슬기로운 의사생활 스핀오프 드라마', cast: '고윤정, 신시아, 강유석, 한예지, 정준원', rating: '8.1%', img: 'https://i.namu.wiki/i/OtP8nUxXL-EVAunN_Xb4IIgwOQb93xaFmazAEGbi9OCRItuPpQ9e50fYfe2Xn9IzD88d7ZbFg9wQCV0m3u67yy_tqPjc-gnHuiFUKGQ6HaxjvsF55Vt9uiwF4rTnobyMMiOGx_UHi5GV_N9V3gKrDA.webp' },
+            { title: '술꾼도시여자들', genre: 'life', plot: '하루 끝의 술 한 잔이 인생의 신념인 세 여자의 일상을 그린 본격 기승전술 드라마', cast: '이선빈, 한선화, 정은지, 최시원', rating: '3.4%', img: 'https://i.namu.wiki/i/3fSBK-ZgXS12aqxcyewsHx-Nfp5Y7kJkb06klji89_iv6h5Zq2FMtU4Z0GYc-m98vc2zHUce3y_8kFm7n91wG9uB2Wvs_0UdYQAfEg-621GvADbMI4qGZKd5kiQfqrYh5NzL5S6HN1mIaVqjgcvxOQ.webp' },
+            { title: '블랙독', genre: 'life', plot: '기간제 교사가 된 사회 초년생 고하늘이 우리 삶의 축소판인 학교에서 꿈을 지키며 살아남기 위해 고군분투하는 이야기', cast: '서현진, 라미란, 하준, 이창훈', rating: '5.5%', img: 'https://i.namu.wiki/i/YU6_QdfUQKSx4CbES33O5_BdJnsAxkU5f-rh7XOa_9xTybFU7QttBOIZEXLy3_eaBQN8Cc9EbasJJnLKJ7W84ot6nbDwBHG5-0HT4tqNRXXaZrEd9r2XMSzbtvUTm0MJE8jsZMkfDVi-aWR7cIkWzg.webp' },
+            { title: '산후조리원', genre: 'life', plot: '회사에서는 최연소 임원, 병원에서는 최고령 산모 현진이 재난 같은 출산과 조난급 산후조리원 적응기를 거치며 조리원 동기들과 함께 성장해 나가는 격정 출산 느와르', cast: '엄지원, 박하선, 장혜진, 윤박, 최리', rating: '4.2%', img: 'https://i.namu.wiki/i/3YvicRxpWO5ys74a0ZlT1x-bTQOXC350akd5WaxDgEv7nzk0P5aBv6JSth17PXKxovB8VI190wPTnv4S2RnRmQozAbg4HNmUF19CpjyhtqmL70YTqQmKDhw9SNfMQRCEI2r7s5h5BTMO_fuQzhschA.webp' },
+            { title: '식샤를 합시다2', genre: 'life', plot: '구대영의 적수가 나타났다! 맛집 블로거 식샤님 구대영과 그를 원수로 기억하는 1일1식 다이어트 4년차 프리랜서 작가 백수지, 초식남 공무원 이상우. 입맛 다른 세종 빌라 1인 가구들의 매콤하게 맛있는 드라마', cast: '윤두준, 서현진, 권율', rating: '3.0%', img: 'https://i.namu.wiki/i/qpuKSRAD7vsohh2czArtvXG3tVbjB6CW5DPcARua9trgMYRoEhlu_I8X_cIEEwy-ZFnLvUDCtA0eHAao2g8frMvEiyej3LhciZ0MwrfcZPdrDUe3UX-d3O-Qxsw0aOQksu4doQQdFIQ8NVQcZO2XhA.webp' },
+            { title: '슬기로운 감빵생활', genre: 'life', plot: '감옥을 배경으로 미지의 공간 속의 사람 사는 모습을 그린 에피소드 드라마', cast: '박해수, 정경호, 정수정', rating: '11.2%', img: 'https://i.namu.wiki/i/lQRIuvWE-fo8T_HrBR9_xk8TU-CxRbLKY1t9I78FKlh95exIL-7Wjx1hBFuxtZxWG1NIv8Bescjwkctkwsy0CmOb3VBxB1DzwAREKaOfci2sAh53BwAzm8ux6JUyEqtMx_1DuStOG6JLHdZvDP4Exw.webp' },
+            { title: '복수가 돌아왔다', genre: 'life', plot: '학교 폭력 가해자로 몰려 부당하게 퇴학을 당한 강복수가, 어른이 돼 학교로 다시 돌아가 복수를 계획하지만, 복수는 고사하고 또다시 사건에 휘말리고 사랑도 다시 하는 엉뚱하면서 따뜻한 감성 로맨스', cast: '유승호, 조보아, 곽동연', rating: '8.1%', img: 'https://i.namu.wiki/i/Xc26LzIVaIRRvGyWJD1Z0MWZl9be-tO_YscJ-NnyCtXk0WZSLmBFIj22NAIVlmXCol_PqntmbQCeVFgLKKGrJUrC22oAmet_ve1x0TFmdctgs8rrRRv3e1H-IS6ZyOGn0D6GjUmZDvghRRFJqtRxRA.webp' },
+            { title: '대행사', genre: 'life', plot: 'VC그룹 최초로 여성 임원이 된 고아인이 최초를 넘어 최고의 위치까지 자신의 커리어를 만들어가는 모습을 그린 우아하게 처절한 광고대행사 오피스 드라마', cast: '이보영, 손나은, 조성하, 한준우, 전혜진', rating: '16.0%', img: 'https://i.namu.wiki/i/arZAmfUVT4YZKVxwSDszB29sD27dwv8Kns82SDIxLI7xUfWOrfI7lwivtZHOhFN0CmbFUtTa7s-wVtNt6jxuJC0BagmA6dIzrJD1yNe2B1cf862os5bSqoebUwa6jYN9E6thAgVLEQHSJF4IIaI0Cg.webp' },
+            { title: '나쁜엄마', genre: 'life', plot: '자식을 위해 악착같이 나쁜 엄마가 될 수 밖에 없었던 영순과 아이가 되어버린 아들 강호가 잃어버린 행복을 찾아가는 감동의 힐링 코미디', cast: '라미란, 이도현, 안은진, 유인수', rating: '12.0%', img: 'https://i.namu.wiki/i/dR9fHUHxUSJvlZc4FIQZBmUUfREEhcLHPpNb4HojLEYCjM9NGpVwYzccYaHQtYOIee2umSmSz97ju0zMhOmpcAQ-fKQW6YQk9ODmZqsf_8L5KAdSEiLp_PBrBqoeaE8qfh_OsnwjxAw2U_w--Pgo2Q.webp' },
+            { title: '스타트업', genre: 'life', plot: '한국의 실리콘 밸리에서 성공을 꿈꾸며 스타트업에 뛰어든 청춘들의 시작(START)과 성장(UP)을 그린 드라마', cast: '배수지, 남주혁, 김선호, 강한나', rating: '5.4%', img: 'https://i.namu.wiki/i/MF_F10rF9b_y8ExX31OUgZNU5CrDPbYOOzBjwHO4fIxRjj7zAzhbRHcBGEA47HyIf-BGADajFuX2fPsh7mNFBxXS_PgFh7Uwhj15f8U8xGYLhJzPUetk7vf4MOwKO7y21whRGavw-AZNibGsVrB9jw.webp'},
+            { title: '기황후', genre: 'life', plot: '원나라의 지배자로 군림하는 고려 여인의 사랑과 투쟁을 다룬 이야기', cast: '하지원, 주진모, 지창욱, 백진희', rating: '29.2%', img: 'https://i.namu.wiki/i/bvhM3n5_NuLrxUs9AQiPR5rx8mcD5vn6Whp6rfoweUNAfpp3dLDiMCgT9iA_RlfRVDMh7JVe4XPk4QwAMfuJiCtMTXmgFdhWd2gQyssEm6MQ26Oj-R51ld8BTDJZnZATGnCtjVc1KK82_JVa5TfFtQ.webp' },
+            { title: '기리고', genre: 'thriller', plot: '소원을 이뤄주는 어플리케이션 기리고의 저주로 인해 갑작스러운 죽음을 예고 받은 고등학생들이 그 저주를 피하기 위해 고군분투하는 이야기', rating: '(OTT)', cast: '전소영, 강미나, 백선호, 현우석, 이효제, 전소니, 노재원', img: 'https://i.namu.wiki/i/bF8h5YUzJpZpBF2il6ZyXgotkU0C_DmXiZllRZMR3Y1Cw2quLcsmrEFQDJvDst0BI3UJ8nqRlIkwaqQhiLCQJknoyZ3ACLCoYv5REKgP1VtBpKf47b8MAKH5hO2Fc2Zr28RrdNp-i4D1ftEFBBzFbg.webp' },
+            { title: '폭싹 속았수다', genre: 'life', plot: '1950년대 제주에서 태어난 요망진 반항아 애순이와 팔불출 무쇠 관식이의 모험 가득한 일생을 사계절로 풀어낸 드라마', cast: '아이유, 박보검, 문소리, 박해준', rating: '(OTT)', img: 'https://i.namu.wiki/i/LkIySGf8ukqxiLBJjKUL7EkR1p_hmIdmsC53qYm_KiAFZ0mdvGuZeU93ISavuDGvGD-eFmkqMPnTcugWbAh3onJsQrhC44Dnj_u1EAFP4uP_xSFlVnj4hAeQQa9cby3iOC_VhK6knOM_RgDPdEHc9Q.webp' },
+            { title: '무빙', genre: 'fantasy', plot: '초능력을 숨긴 채 현재를 살아가는 아이들과 아픈 비밀을 감춘 채 과거를 살아온 부모들의 이야기를 그린 휴먼 액션 시리즈', cast: '류승룡, 한효주, 조인성, 차태현, 류승범', rating: '(OTT)', img: 'https://i.namu.wiki/i/mhsHgKpu4kpkJ5CJqv_r9YcgnQeObtvht2w4UIlVM7YyOeu0AVon7tCDgYnmK2kCbgW3o96Koi7NSRhi9Dw9OLowdgjTh_ebohShyLp0i_KCtiUQE6FZtRtoxP596AaSvYGmH9WegSOKQX8hMbNh1w.webp' },
+            { title: '모범택시', genre: 'thriller', plot: '정의가 실종된 사회, 베일에 가려진 택시회사 무지개 운수와 택시기사 김도기가 억울한 피해자를 대신해 복수를 완성하는 사적 복수 대행극', cast: '이제훈, 이솜, 김의성, 표예진', rating: '21.0%', img: 'https://i.namu.wiki/i/uqtP-YiEKX914NYWc7q_aF7rjWjG-Jiyd1rkd8-3HexxM2fF06pzvt53zwqFr3A3f9XRMsyfnjUgWFcuFYY7Y2Z-dL_myGA6wlE1aH7Fs7Q_T9-f9XAQ0o6sNgCaWj_3AJBpym3woosorAz8S92xcw.webp' },
+            { title: '지금 우리 학교는', genre: 'thriller', plot: '좀비 바이러스가 퍼진 한 고등학교에 고립된 이들과 그들을 구하려는 자들이 한 치 앞을 알 수 없는 극한의 상황을 겪으며 벌어지는 이야기', cast: '박지후, 윤찬영, 조이현, 로몬, 유인수', rating: '(OTT)', img: 'https://i.namu.wiki/i/Ve6_rbFilf_RQtXB6jCFs4pCIIg1tTZvFDXXV-qhLrCOB4b8v8rKylLQY-9o0avIHlDLwYQXGXLnRF7KQ1B6eoeXqtMB7GSYOWC9nHI_MU5GLQvrIt3OpWyEBE4x65BL9s78fSqBZ931xDJkgJoP7Q.webp' },
+            { title: '지금 거신 전화는', genre: 'thriller', plot: '협박 전화로 시작된, 정략결혼 3년 차 쇼윈도 부부의 시크릿 로맨스릴러', cast: '유연석, 채수빈, 허남준, 장규리', rating: '8.6%', img: 'https://i.namu.wiki/i/MG7tanVLxYYFj_bW9YQbzrzXYAoyqxUsxxzE5nDQX6CVekBuDOC7c18RcrIf4PsqWaCDCNKrOieTVIXeC0L1FSXY2u9oO8a3Rx26iVORVHmp20PHTtyAFQIoa7lTKCa9g-N1Xom6IAFkOVkWg2NAuQ.webp' },
+            { title: '이 사랑 통역 되나요?', genre: 'romance', plot: '다국어 통역사 주호진이 글로벌 톱스타 차무희의 통역을 맡게 되면서 벌어지는 예측불허 로맨틱 코미디', cast: '김선호, 고윤정, 후쿠시 소타', rating: '(OTT)', img: 'https://i.namu.wiki/i/zaoZHYgVPzFD9Yr8U8VWudvPwbGxa73mutq2Wl2XCCKcchR6aXQJlOPsaJwhVUj1wTqIKBnlcj7O5tjcLx8zxfB4hR9LrKuuDmMdNHJSVY2KXMmf_ov4xRExdgOQpSQo19BtnR5Fw8_WLaT8p77-bA.webp' },
+            { title: '이상한 변호사 우영우', genre: 'life', plot: '천재적인 두뇌와 자폐스펙트럼을 동시에 가진 신입 변호사 우영우의 대형 로펌 생존기', cast: '박은빈, 강태오, 강기영, 전배수, 진경', rating: '17.5%', img: 'https://i.namu.wiki/i/CLWcjR0luHSyFCmFnrNLI4Blq8oH-cWysLWbDmYYeXFPcxiZTpU6mN8c7upPX9aGyk-FY3uWydR2BHqI7lANwwNK_ZF8Ye4WHJaZeVWvjLNLCU_uFwW4zBBeB47LDhSRcpny5uIl-QorQXlv9jth7w.webp' },
+            { title: '해피니스', genre: 'thriller', plot: '감염병이 일상화된 뉴노멀 시대, 고층 아파트에서 벌어지는 계급 간 차별과 새로운 감염병 광인병이 나타나며 벌어지는 도시 스릴러', cast: '한효주, 박형식, 조우진', rating: '4.2%', img: 'https://i.namu.wiki/i/kPGgabpZQiLIj_KR2NK0kp0p6p9AyXThaLrOBrzQldZM9xRcKeL7lBha1wBV-Fl6ebuZ2na4umbilxxSfqRRkgqQo9Itbio0uw4fGHN3KDcU7mV61RGTDqDssc3Zb-CFgu5txzs1163TP06zwT2qyA.webp' },
+            { title: '레이디 두아', genre: 'thriller', plot: '미스터리한 사연을 가진 인물들이 얽히고설키며 벌어지는 긴장감 넘치는 스릴러', cast: '신혜선, 이준혁', rating: '(OTT)', img: 'https://i.namu.wiki/i/dmKlDWjz6vyCoez3BpRVFZN8K3L85WuOGjx3hYNxrV4ypgMybBc2tLA5A0BZt-u2_IfYCzYxCUNWlpdK_VtCFbc0mSl0XvO94QTWQLfe-s21WOXU8LoxVPhQ6rtyvz74Rul2ImBXdVkSlgY0o5qd8A.webp' },
+            { title: '연모', genre: 'romance', plot: '쌍둥이로 태어나 여아라는 이유만으로 버려졌던 아이가 오라비 세손의 죽음으로 남장을 통해 세자가 되면서 벌어지는 비밀스러운 궁중 로맨스', cast: '박은빈, 로운, 남윤수, 최병찬, 정채연', rating: '12.1%', img: 'https://i.namu.wiki/i/J5O6q1L1ZtdNwidTQVLJawMIq9PBZmC5Ub9dAgaT_0xMfFC2mn2nxtUv6borbsf1wS26uEjNHoU_ERON6Bd6Fsiz0O7rvwgLOi-zE7063OPnd23Y5Q5l59HeXdgRlyoVWRpjrMXF07mcQ71iRe88EQ.webp' },
+            { title: '더 킹:영원의 군주', genre: 'fantasy', plot: '악마에 맞서 차원의 문을 닫으려는 이과형 대한제국 황제 이곤과 누군가의 삶을 지키려는 대한민국 형사 정태을이 두 세계를 넘나들며 공조하는 판타지 로맨스', cast: '이민호, 김고은, 우도환, 김경남, 정은채', rating: '11.6%', img: 'https://i.namu.wiki/i/1xGtD1j3VogW8RnCuwJU8KkioGnjmnajbM8jpfGL5wWeUFFtZBQn3UpG0osLmp1s2nP8yfYbwCs72gQbGTIJ4kIHBSbQi6YHlpanfkWK75f2jVqH-a6L3jngVlLHbfs8pfKMM3o7m0iMLh51wskAnA.webp' },
+            { title: '그 남자의 기억법', genre: 'romance', plot: '과잉기억증후군으로 1년 365일을 모조리 기억하는 앵커 이정훈과 열정을 다해 사는 라이징 스타 여하진의 상처 극복 로맨스', cast: '김동욱, 문가영, 윤종훈, 김슬기', rating: '5.4%', img: 'https://i.namu.wiki/i/6HI6jk420I7sgbilgQ6GruSpFz1NQYwML9ojEYz7UDStUBPQIaiuTG92JwNQY0LWsZrvbRJZf8WY62V2VpK9KAp0HHvprfCxToqA8fptLDE_G2Xyc9Oj2zisOnUDiRJRgceuYjfebJqHQAfoxBR1qg.webp' },
+            { title: '하이라키', genre: 'thriller', plot: '상위 0.01%의 소수가 법으로 군림하는 주신고등학교에 비밀을 품고 입성한 전학생이 그들의 견고한 세계에 균열을 일으키며 벌어지는 하이틴 스캔들', cast: '노정의, 이채민, 김재원, 지혜원', rating: '(OTT)', img: 'https://i.namu.wiki/i/64Hr9btGPJUNoVGzTP3RrMSSt51hvcvvJF6-PzM8UEif06V7gw2R47WAQ9Kn6Nuj1TgwgIQ_GldL778hOruHmZRpF7eQYTRefxoUWqiVdivh5LohoXNnRraDiUcSNx6moSz5BHg8rHaqydWaknVWFQ.webp' },
+            { title: '다 이루어질지니', genre: 'fantasy', plot: '서로의 생사여탈권을 쥔 감정과잉 지니와 감정결여 가영이 세 가지 소원을 놓고 벌이는 로맨틱 코미디', cast: '김우빈, 수지, 안은진, 노상현', rating: '(OTT)', img: 'https://i.namu.wiki/i/iFrSukDC99jMEBX54KXySAD6KH9H1EvaKQZU_YdgtzIraDclGLKTuw-e_4HYnTNmL73EGFIxhbRG6GyHgIwdJvf0zL_VSmIru-b1e3WBVJioRHQOALjhqvwWiBsefeEkDBAD7WuZ0hEuoJ5uPSe9qA.webp' },
+            { title: '당신이 죽였다', genre: 'thriller', plot: '어릴 적부터 친구였던 두 여자가 어느 날 벌어진 살인사건으로 인해 엇갈린 운명을 맞이하게 되는 서스펜스 스릴러', cast: '전소니, 이유미', rating: '(OTT)', img: 'https://i.namu.wiki/i/B9TG3-1bBS_AB6lDR3Ed9RsjgXYoGE2vjUSBuu5_bjgEVVPEao970ZU3bqCVMj83c6awPp5sOoHbpDXrUuwfYTvjpYQmBTEUSQOowk9YTK7YXW-1eakpNIqKLiAyif9_AZDg3nrQesMt2YtBj19wfg.webp' },
+            { title: '낭만닥터 김사부', genre: 'life', plot: '지방의 초라한 돌담병원을 배경으로 벌어지는 진짜 의사들의 이야기', cast: '한석규, 유연석, 서현진, 안효섭, 이성경', rating: '27.6%', img: 'https://i.namu.wiki/i/DZBBWVdLfhvykq9S5AAffdZfbCgKAGGkykO60cvl-vbe9DxfXjHn2uw90aOMotQ_pkqke_oBTLjBMvO4I0B6er49636KvSYzIUZeXHy-mKZGMP_4K7NfHU6V511OwolAaptv4DgG7bNa8wG4MliSIg.webp' },
+            { title: '지옥에서 온 판사', genre: 'fantasy', plot: '판사의 몸에 들어간 악마 강빛나가 열혈형사 한다온을 만나 죄인들을 처단하며 진정한 판사로 거듭나는 선악공존 사이다 액션 판타지', cast: '박신혜, 김재영, 김인권, 김아영', rating: '11.9%', img: 'https://i.namu.wiki/i/TianqMW6ZuxRTsrY8fO1S0UQ5xQdedBZbl7eOik-iRc1vNKDVNVFEjBbHOxW5uGyUID2C75dI1EyOKuGVd420YZnH6_usCVckI_VXut0pM0DDck5jf5ypDB-7z_jTGowGtoIg4sJEVuB5wfBrxqkJg.webp' },
+            { title: '찬란한 너의 계절에', genre: 'romance', plot: '사고로 청력과 기억을 잃은 남자와, 그를 구한 여자의 이야기', cast: '서인국, 이성경', rating: '5.5', img: 'https://i.namu.wiki/i/8oacym_dFs3FINWcOQrP1Czpu6bauDWayBf89QTgb22DHHnjE52OwFWNK34zDXofXyrMWn8Eltzw7fLpjwnguoJma_VBVIL7c2a_CvXZTGkpfmp8RbuL8Z57q3xNWgrkFBNIPjKgnOCbOjP6Tu6JGw.webp' },
+            { title: '금수저', genre: 'fantasy', plot: '가난한 집에서 태어난 아이가 우연히 얻게 된 금수저를 통해 부잣집에서 태어난 친구와 운명을 바꿔 후천적 금수저가 된 인생 어드벤처 이야기', cast: '육성재, 이종원, 정채연, 연우', rating: '7.8%', img: 'https://i.namu.wiki/i/MCzA5ikpk9aqsa5v8UMRcry7rcT2wFSnBMvxymcvRvqLtKyyxAbh-mWEX__3gqfbjInyGSSrFfAsQUKG0ITqprwufpbZUvJ4Skj3OZxV6kCt493D6m0Xb8Ifmdw1WQOSsYarax0RqTRShptVehxQjg.webp' },
+            { title: '너와 나의 경찰수업', genre: 'life', plot: '겁도 없고 답도 없지만 패기 하나 넘치는 눈부신 열혈 청춘들의 경찰대학 캠퍼스 라이프', cast: '강다니엘, 채수빈, 이신영, 박유나', rating: '(OTT)', img: 'https://i.namu.wiki/i/EDFOLCTNk1xTlpX5aTAPfgiA5hRSDPJG_D0z2EUfV29-dA4KgMQo7pvE7cBdqSpm6FKw0c4pleUGBzLPCBB9PgrDtOjg0hYfz3HPWqfMT4UcrFAhcPNPYFG1vBj7SZLfoqord6w_qTBajcO9hVzUeQ.webp' },
+            { title: '오월의 청춘', genre: 'romance', plot: '1980년 5월, 역사의 소용돌이 한가운데 운명처럼 서로에게 빠져버린 희태와 명희의 아련한 봄 같은 사랑 이야기', cast: '이도현, 고민시, 이상이, 금새록', rating: '5.7%', img: 'https://i.namu.wiki/i/HvDHeqHd1_aZT51bEQlqsN9N47W16wh0S_Wt7HH8Fjyi9GlhMr1z66wteEYQVBGE7FPtTWekDLidL_HZKJOQvzG3ryvqWaoYixQcqcPkaYzHXYBRHViN1HxzblEFEJYpT4l9MV-MSLpE1uviAPoQwQ.webp' },
+            { title: '이재, 곧 죽습니다', genre: 'fantasy', plot: '지옥으로 떨어지기 직전의 최이재가 죽음이 내린 심판에 의해 12번의 죽음과 삶을 경험하게 되는 인생 환승 드라마', cast: '서인국, 박소담', rating: '(OTT)', img: 'https://i.namu.wiki/i/8j7Vz9RS8ErvRYqPy299IrLajGdUTt8g0FjIL8-V1Ztsz8Shy7DCdcsixmpX1noohGce-pY73NJRetp4a0k2l8yvK1agFeOItniZ5d2BJplBL_QK-qd9PCwth7RkK_SFpdlvqyHUzINNUcsiPSj64g.webp' },
+            { title: '태풍상사', genre: 'life', plot: '1997년 IMF 외환위기를 배경으로, 도산 위기에 처한 중소기업을 살리기 위해 분투하는 대표와 직원들의 이야기', cast: '이준호, 김민하', rating: '10.3%', img: 'https://i.namu.wiki/i/GgddVMbd_UdTT9eD9UOG3Kk6CmQuxMjMtx8hYeeDHTXny98N3tDQOXmwzA_bkPuPrbadZmv4PAJ61_EIagMtU5KIQf3YjPxWWH0CpzYYKM8LVMjXKU8gDGfcdxIz4kQ0ypIOzE9sf30GbzHJaAPcJA.webp' },
+            { title: '밤이 되었습니다', genre: 'thriller', plot: '종료가 불가능한 의문의 마피아 게임에 강제로 참여하게 된 유일고 2학년 3반의 하이틴 미스터리 스릴러', cast: '이재인, 김우석, 최마빈, 차우민', rating: '(OTT)', img: 'https://i.namu.wiki/i/kpRLTeLoS-zBuTcfxGbR0FJbcxeDIRtsE6vTGFbZxsrzNDVifRrhwDedOHEiqTNJLplgAAebpQ3iyDozk8Vh-KbBnCGq7za89crCYAQAtOOE5e4gfGKdW77oP-yybXTB6_-EyDOJFzgdmDgsUWejqA.webp' },
+            { title: '슈룹', genre: 'life', plot: '사고뭉치 왕자들을 위해 치열한 왕실 교육 전쟁에 뛰어드는 중전의 파란만장 궁중 분투기', cast: '김혜수, 김해숙, 최원영, 김의성, 문상민', rating: '16.9%', img: 'https://i.namu.wiki/i/0HnWFZkQa1igXVHBsaZHNEdm2WNtcbbYtjcKE52z2SHC7lgbs0ntTnaWa1cWlfkfqGv3p6TzF2PrQpydYAjva66ExKUhyjggqoXwov7yvlO9rmbiZL-iF80cz9SjGo0SUo-3pH4-EugVwH96GkidqQ.webp' },
+            { title: '무인도의 디바', genre: 'life', plot: '15년 만에 무인도에서 구조된 가수 지망생 서목하의 디바 도전기', cast: '박은빈, 김효진, 채종협, 차학연', rating: '9.0%', img: 'https://i.namu.wiki/i/su27rptkhs2OsLqX0MRkwqKLRF0ZtLzMT2iUgRf6l5cWU8VSnkZeu9ScMVJswYdCP-E91SA3pyy13lmfOO_UvzQBkqeaSqYV-_0YFx8-3ZZ45i3QpN2NxUnQxKLva1ivNqsOhuniq2yQs-RRLSRwuw.webp' },
+            { title: '눈이 부시게', genre: 'life', plot: '주어진 시간을 다 써보지도 못하고 잃어버린 여자와 눈부신 순간을 내던지고 무기력하게 사는 남자의 시간 이탈 로맨스', cast: '김혜자, 한지민, 남주혁, 손호준', rating: '9.7%', img: 'https://i.namu.wiki/i/hGrfpgmO5FQ32J5nlr3vDF2FxJdcDneLIPVgC3Gm2IP69tQF1gJPZDlyNRG5XiH4kVChvHIcl6jsxssqtgwHXXA7YBrlBbjoSYcrDDz7yZoRAniPlGIzeqsrGvGxzmWr899uXhYgOeIDNL7KV6U1gQ.webp' },
+            { title: '소용없어 거짓말', genre: 'fantasy', plot: '거짓말이 들리는 능력 때문에 사람을 믿지 못하는 라이어 헌터와 정체를 숨긴 천재 작곡가가 만나 펼치는 진실 탐지 로맨스', cast: '김소현, 황민현, 서지훈, 이시우', rating: '3.4%', img: 'https://i.namu.wiki/i/Vr-eo0JJ5pSsEZsuL20YcFzIJVpjNC6sRjfLgpNTH8HA9RBeLbV-ahMy15VRDkk-p6ap41i-esg7F9kAvP_LisySr8QpdVwx-mkh-sz-F4WOXLGvhut6QthKNlODhkqfNYwf6Hza4UzKkXCCgm6tpg.webp' },
+            { title: '더 글로리', genre: 'thriller', plot: '유년 시절 폭력으로 영혼까지 부서진 한 여자가 온 생을 걸어 치밀하게 준비한 처절한 복수극', cast: '송혜교, 이도현, 임지연, 염혜란, 박성훈', rating: '(OTT)', img: 'https://i.namu.wiki/i/lW_XhIqQX8_jNMqBeADHyBrpIPfIZ9ogq91RuH-8yhdRhug_z1O5XhxEznqAZKSqg1CAuSook1hSghxiAtQvyEnxsJ3dvfxG1VLXrgvhSy2EBMLLyS61Z1Zo6x-swdvJWjEKeMGFO9SFocjoSiMsYQ.webp' },
+            { title: '나의 아저씨', genre: 'life', plot: '삶의 무게를 버티며 살아가는 아저씨 삼 형제와 거칠게 살아온 한 여자가 서로를 통해 삶을 치유하게 되는 이야기.', cast: '이선균, 이지은', rating: '7.4%', img: 'https://i.namu.wiki/i/SMdHIQmR7xqrZukIKIfvG_gqnL8RsqcDnOX3R0totTYRyxLjiln5xzri56e1M1sTO8uusWP_KPj228fpmZIdLMC_QBzsrNHTKOcwIH5Izeq-OSPxwSLpcoIcVoKF6oo-S1HfxcUEmmbOxPqY71BFTA.webp' },
+            { title: '월간남친', genre: 'romance', plot: '현실 생활에 지친 웹툰 PD 미래가 가상 연애 시뮬레이션을 통해 연애를 구독하고 체험해보는 로망 실현 로맨틱 코미디', cast: '지수, 서인국', rating: '(OTT)', img: 'https://i.namu.wiki/i/bmTOiKy49jUjMDcbMkfdlt6XbQCnhOcLsvowI8koKP5WkPLuvYtz7NzY374ASr4koGJGECSRHxPh55WiSF2V9yk-T76dVrB--KD3mmHzZDFjLdEfheRMtLlXz-z70TTU9UTkC0wvIVAJ7AnEhLzToA.webp' },
+            { title: '정신병동에도 아침이 와요', genre: 'life', plot: '정신건강의학과 근무를 처음 하게 된 간호사 다은이 정신병동 안에서 만나는 세상과 마음 시린 사람들의 다양한 이야기를 그린 넷플릭스 시리즈', cast: '박보영, 연우진, 장동윤, 이정은', rating: '(OTT)', img: 'https://i.namu.wiki/i/MBrqM0M_vKgDKIE36yDfTYXuC46ljyPOhzbQ2BStyn7KVly3ebsQthms6XB70JX5bzC-nt8JUEMX79ebhD0DFFf3pOrqgCVxaTY-7i279F0xKC-lolHSxsOq_r_bkkxkswmIxtq4amth8b_Lt4U9Tw.webp' },
+            { title: '경성크리처', genre: 'thriller', plot: '시대의 어둠이 가장 짙었던 1945년 봄, 생존이 전부였던 두 청춘이 탐욕 위에 탄생한 괴물과 맞서는 이야기', cast: '박서준, 한소희, 수현, 김해숙, 조한철, 위하준', rating: '(OTT)', img: 'https://i.namu.wiki/i/ZOZkeSuaBQysoYxf_rnKfOqErvq-Tlk9NoBMxFtjrquhEl4guzujqvnkVNh6QwsGReZ6hXF6FXC5MbJ5PzUc8-2lpY5Qxxkhc4ObEH5ytDw8b1gtmPC-ZRS8f97ngy4E5fYowrbunFcxx8OEOhnvNQ.webp' }
+        ];
+
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        function route() {
+            const hash = window.location.hash.substring(1) || 'intro';
+            pages.forEach(page => page.classList.remove('active'));
+            navLinks.forEach(link => link.classList.remove('active'));
+            const targetPage = document.getElementById(hash);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                const activeLink = document.querySelector(`.nav-link[data-target="${hash}"]`);
+                if (activeLink) activeLink.classList.add('active');
+            } else {
+                document.getElementById('intro').classList.add('active');
+                document.querySelector('.nav-link[data-target="intro"]').classList.add('active');
+            }
+        }
+
+        const genreFilters = document.querySelectorAll('#genre-filter li');
+        const genreList = document.getElementById('genre-list');
+        const modal = document.getElementById('info-modal');
+        const modalBody = modal.querySelector('.modal-body');
+
+        function renderDramaList(genre) {
+            genreList.innerHTML = ''; 
+            const dramas = genre === 'all' ? dramaTitles : dramaTitles.filter(d => d.genre === genre);
+
+            dramas.forEach(drama => {
+                const posterItem = document.createElement('div');
+                posterItem.className = 'drama-poster';
+                
+                const posterContent = drama.img 
+                    ? `<img src="${drama.img}" style="width:100%; height:100%; object-fit:cover;" alt="${drama.title}">` 
+                    : `${drama.title}<br>포스터 이미지`;
+
+                posterItem.innerHTML = `
+                    <div class="poster-img" style="${drama.img ? 'padding:0;' : ''}">${posterContent}</div>
+                    <div class="poster-title">${drama.title}</div>
+                `;
+                posterItem.addEventListener('click', () => showDramaInfo(drama));
+                genreList.appendChild(posterItem);
+            });
+        }
+
+        function showDramaInfo(drama) {
+            modalBody.innerHTML = `
+                <h3>${drama.title}</h3>
+                <div class="drama-meta">
+                    <span class="rating">최고 시청률 : ${drama.rating}</span>
+                    <span class="cast"><span>등장인물 :</span> ${drama.cast}</span>
+                </div>
+                <p class="plot">${drama.plot}</p>
+                <div class="close-btn" onclick="closeModal()">닫기</div>
+            `;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        genreFilters.forEach(filter => {
+            filter.addEventListener('click', () => {
+                genreFilters.forEach(f => f.classList.remove('active'));
+                filter.classList.add('active');
+                renderDramaList(filter.getAttribute('data-genre'));
+            });
+        });
+
+        const hashtagBtns = document.querySelectorAll('.hashtag-btn');
+        const hashtagResult = document.getElementById('hashtag-result');
+        const hashtagBg = document.getElementById('hashtag-bg');
+        const hashtagTitle = document.getElementById('hashtag-title');
+        const hashtagDesc = document.getElementById('hashtag-desc');
+        const extraTagsContainer = document.getElementById('hashtag-extra-tags');
+
+        hashtagBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                hashtagBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const tag = btn.getAttribute('data-tag');
+                const data = hashtagData[tag];
+                
+                hashtagTitle.innerHTML = `<span style="font-size: 2.5rem; display: block; margin-bottom: 15px; letter-spacing: 5px;">${data.emoji}</span>${data.title}`;
+                hashtagTitle.style.color = '#fff';
+                hashtagTitle.style.fontSize = '2.2rem';
+                hashtagTitle.style.fontWeight = '900';
+                hashtagDesc.innerHTML = data.desc;
+
+                extraTagsContainer.innerHTML = ''; 
+                if(data.genreTags) {
+                    data.genreTags.forEach(tagText => {
+                        const span = document.createElement('span');
+                        span.className = 'extra-tag genre';
+                        span.innerText = tagText;
+                        extraTagsContainer.appendChild(span);
+                    });
+                }
+                if(data.relatedTags) {
+                    data.relatedTags.forEach(tagText => {
+                        const span = document.createElement('span');
+                        span.className = 'extra-tag related';
+                        span.innerText = tagText;
+                        extraTagsContainer.appendChild(span);
+                    });
+                }
+                
+                if(data.img) {
+                    hashtagBg.style.backgroundImage = `url('${data.img}')`;
+                    hashtagBg.style.opacity = '1';
+                } else {
+                    hashtagBg.style.opacity = '0';
+                }
+            });
+        });
+
+        renderDramaList('all');
+        window.addEventListener('hashchange', route);
+        window.addEventListener('DOMContentLoaded', route);
+        window.onclick = function(event) { if (event.target == modal) closeModal(); }
+    </script>
+</body>
+</html>
