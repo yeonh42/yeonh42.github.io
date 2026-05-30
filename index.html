@@ -330,34 +330,27 @@
             font-weight: 500;
         }
         
+        /* --- 모바일 터치(클릭) 이벤트를 위한 추가 CSS (잔상 제거 버전) --- */
         @media (max-width: 768px) {
-            .header-inner { flex-direction: column; height: auto; padding: 1rem 0; gap: 1rem; }
-            nav.gnb { gap: 1.5rem; font-size: 0.9rem; }
-            .hero-section { flex-direction: column; }
-            .profile-img-box { width: 100%; aspect-ratio: 1; }
-            .info-grid { grid-template-columns: 1fr; max-width: 100%; }
-            .drama-list { grid-template-columns: repeat(2, 1fr); }
-            .banner-layout { flex-direction: column; }
-            .tab-menu { flex-wrap: wrap; border-radius: 4px; }
-            .tab-menu li { flex: 1 1 50%; border-bottom: 1px solid var(--border-color); }
-            .hashtag-result-box { min-height: 250px; padding: 3rem 1.5rem; }
-            .review-container { flex-direction: column; }
-        }
-        /* --- 모바일 터치(클릭) 이벤트를 위한 추가 CSS --- */
-        .hover-review-box.clicked .hover-overlay { opacity: 1; transform: translateY(0); }
-        .banner-main.clicked .banner-content { opacity: 0; }
-        .side-box.clicked .side-box-content { opacity: 0; }
-        .side-box.clicked::before { background: rgba(0,0,0,0.2); }
-        .side-box.clicked { border-color: var(--point-color); }
+            /* 클릭 안 된 상태: hover 잔상 강제 무시 */
+            .hover-review-box:not(.clicked) .hover-overlay { opacity: 0 !important; transform: translateY(15px) !important; }
+            .banner-main:not(.clicked) .banner-content { opacity: 1 !important; }
+            .side-box:not(.clicked) .side-box-content { opacity: 1 !important; }
+            .side-box:not(.clicked)::before { background: rgba(0,0,0,0.6) !important; }
+            .side-box:not(.clicked) { border-color: var(--border-color) !important; }
+            
+            .review-card:not(.clicked) { transform: none !important; border-color: var(--border-color) !important; background: var(--bg-card) !important; box-shadow: none !important; }
+            .review-card:not(.clicked) .review-drama-title { transform: translateY(100%) !important; }
 
-        .review-card.clicked { 
-            transform: translateY(-5px); 
-            border-color: var(--point-color); 
-            background: var(--bg-card-hover); 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        }
-        .review-card.clicked .review-drama-title { 
-            transform: translateY(0); 
+            /* 클릭된 상태: 효과 적용 */
+            .hover-review-box.clicked .hover-overlay { opacity: 1 !important; transform: translateY(0) !important; }
+            .banner-main.clicked .banner-content { opacity: 0 !important; }
+            .side-box.clicked .side-box-content { opacity: 0 !important; }
+            .side-box.clicked::before { background: rgba(0,0,0,0.2) !important; }
+            .side-box.clicked { border-color: var(--point-color) !important; }
+            
+            .review-card.clicked { transform: translateY(-5px) !important; border-color: var(--point-color) !important; background: var(--bg-card-hover) !important; box-shadow: 0 10px 20px rgba(0,0,0,0.5) !important; }
+            .review-card.clicked .review-drama-title { transform: translateY(0) !important; }
         }
     </style>
 </head>
@@ -922,21 +915,21 @@
 
         // --- 모바일 터치(클릭) 이벤트를 위한 추가 JS ---
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. 나의 인생 드라마 감상평 클릭 이벤트
+            // 1. 나의 인생 드라마 감상평 토글
             const hoverBoxes = document.querySelectorAll('.hover-review-box');
             hoverBoxes.forEach(box => {
                 box.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) { // 모바일 화면에서만 동작
+                    if (window.innerWidth <= 768) {
                         this.classList.toggle('clicked');
                     }
                 });
             });
 
-            // 2. 리뷰 카드 드라마 제목 클릭 이벤트
+            // 2. 리뷰 카드 드라마 제목 토글
             const reviewCards = document.querySelectorAll('.review-card');
             reviewCards.forEach(card => {
                 card.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) { // 모바일 화면에서만 동작
+                    if (window.innerWidth <= 768) {
                         this.classList.toggle('clicked');
                     }
                 });
