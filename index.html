@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>조연희 - Drama Curator & Portfolio</title>
+    <title>yeonh SPA Homepage</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -343,7 +343,6 @@
             .hashtag-result-box { min-height: 250px; padding: 3rem 1.5rem; }
             .review-container { flex-direction: column; }
         }
-        /* --- 모바일 터치 토글 전용 클래스 (기존 구조 침해 X) --- */
         .hover-review-box.active-touch .hover-overlay { opacity: 1; transform: translateY(0); }
         .banner-main.active-touch .banner-content { opacity: 0; }
         .side-box.active-touch .side-box-content { opacity: 0; }
@@ -442,7 +441,7 @@
                     </div>
                     <div class="hover-overlay">
                         <span class="review-label">나의 감상평 ✍️</span>
-                        <p>뻔한 내용이 아닌 역사라는 거대한 흐름 속에서 개인이 느끼는 고독과 사랑의 흔적을 처절하게 그려냈습니다. 마지막회를 보고 나면 한동한 현실로 돌아오기 힘들 정도로 깊은 여운이 남습니다. 드라마는 OST가 주는 몰입감도 매우 큰데 달의연인-보보경심려만큼 ost가 좋은 드라마가 없다고 생각합니다.</p>
+                        <p>뻔한 내용이 아닌 역사라는 거대한 흐름 속에서 개인이 느끼는 고독과 사랑의 흔적을 처절하게 그려냈습니다. 마지막회를 보고 나면 한동한 현실로 돌아오기 힘들 정도로 깊은 여운이 남습니다. OST가 주는 몰입감도 매우 큰 드라마 중 하나입니다.</p>
                     </div>
                 </div>
 
@@ -913,21 +912,16 @@
         window.addEventListener('DOMContentLoaded', route);
         window.onclick = function(event) { if (event.target == modal) closeModal(); }
 
-        // --- 모바일 터치 이벤트 (열기/닫기) ---
         document.addEventListener('DOMContentLoaded', () => {
             const touchElements = document.querySelectorAll('.hover-review-box, .review-card');
 
             touchElements.forEach(el => {
                 el.addEventListener('click', function(e) {
-                    // 모바일 화면(768px 이하)에서만 작동
                     if (window.innerWidth <= 768) {
-                        // 이미 터치된 상태라면 원래대로 되돌리기 (닫기)
                         if (this.classList.contains('active-touch')) {
                             this.classList.remove('active-touch');
                         } else {
-                            // 열려있는 다른 카드들을 먼저 다 닫기
                             touchElements.forEach(item => item.classList.remove('active-touch'));
-                            // 클릭한 카드만 열기
                             this.classList.add('active-touch');
                         }
                     }
