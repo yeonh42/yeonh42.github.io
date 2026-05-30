@@ -330,28 +330,28 @@
             font-weight: 500;
         }
         
-        /* --- 모바일 터치(클릭) 이벤트를 위한 추가 CSS (잔상 제거 버전) --- */
         @media (max-width: 768px) {
-            /* 클릭 안 된 상태: hover 잔상 강제 무시 */
-            .hover-review-box:not(.clicked) .hover-overlay { opacity: 0 !important; transform: translateY(15px) !important; }
-            .banner-main:not(.clicked) .banner-content { opacity: 1 !important; }
-            .side-box:not(.clicked) .side-box-content { opacity: 1 !important; }
-            .side-box:not(.clicked)::before { background: rgba(0,0,0,0.6) !important; }
-            .side-box:not(.clicked) { border-color: var(--border-color) !important; }
-            
-            .review-card:not(.clicked) { transform: none !important; border-color: var(--border-color) !important; background: var(--bg-card) !important; box-shadow: none !important; }
-            .review-card:not(.clicked) .review-drama-title { transform: translateY(100%) !important; }
-
-            /* 클릭된 상태: 효과 적용 */
-            .hover-review-box.clicked .hover-overlay { opacity: 1 !important; transform: translateY(0) !important; }
-            .banner-main.clicked .banner-content { opacity: 0 !important; }
-            .side-box.clicked .side-box-content { opacity: 0 !important; }
-            .side-box.clicked::before { background: rgba(0,0,0,0.2) !important; }
-            .side-box.clicked { border-color: var(--point-color) !important; }
-            
-            .review-card.clicked { transform: translateY(-5px) !important; border-color: var(--point-color) !important; background: var(--bg-card-hover) !important; box-shadow: 0 10px 20px rgba(0,0,0,0.5) !important; }
-            .review-card.clicked .review-drama-title { transform: translateY(0) !important; }
+            .header-inner { flex-direction: column; height: auto; padding: 1rem 0; gap: 1rem; }
+            nav.gnb { gap: 1.5rem; font-size: 0.9rem; }
+            .hero-section { flex-direction: column; }
+            .profile-img-box { width: 100%; aspect-ratio: 1; }
+            .info-grid { grid-template-columns: 1fr; max-width: 100%; }
+            .drama-list { grid-template-columns: repeat(2, 1fr); }
+            .banner-layout { flex-direction: column; }
+            .tab-menu { flex-wrap: wrap; border-radius: 4px; }
+            .tab-menu li { flex: 1 1 50%; border-bottom: 1px solid var(--border-color); }
+            .hashtag-result-box { min-height: 250px; padding: 3rem 1.5rem; }
+            .review-container { flex-direction: column; }
         }
+        /* --- 모바일 터치 토글 전용 클래스 (기존 구조 침해 X) --- */
+        .hover-review-box.active-touch .hover-overlay { opacity: 1; transform: translateY(0); }
+        .banner-main.active-touch .banner-content { opacity: 0; }
+        .side-box.active-touch .side-box-content { opacity: 0; }
+        .side-box.active-touch::before { background: rgba(0,0,0,0.2); }
+        .side-box.active-touch { border-color: var(--point-color); }
+
+        .review-card.active-touch { transform: translateY(-5px); border-color: var(--point-color); background: var(--bg-card-hover); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .review-card.active-touch .review-drama-title { transform: translateY(0); }
     </style>
 </head>
 <body>
@@ -913,24 +913,23 @@
         window.addEventListener('DOMContentLoaded', route);
         window.onclick = function(event) { if (event.target == modal) closeModal(); }
 
-        // --- 모바일 터치(클릭) 이벤트를 위한 추가 JS ---
+        // --- 모바일 터치 이벤트 (열기/닫기) ---
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. 나의 인생 드라마 감상평 토글
-            const hoverBoxes = document.querySelectorAll('.hover-review-box');
-            hoverBoxes.forEach(box => {
-                box.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        this.classList.toggle('clicked');
-                    }
-                });
-            });
+            const touchElements = document.querySelectorAll('.hover-review-box, .review-card');
 
-            // 2. 리뷰 카드 드라마 제목 토글
-            const reviewCards = document.querySelectorAll('.review-card');
-            reviewCards.forEach(card => {
-                card.addEventListener('click', function() {
+            touchElements.forEach(el => {
+                el.addEventListener('click', function(e) {
+                    // 모바일 화면(768px 이하)에서만 작동
                     if (window.innerWidth <= 768) {
-                        this.classList.toggle('clicked');
+                        // 이미 터치된 상태라면 원래대로 되돌리기 (닫기)
+                        if (this.classList.contains('active-touch')) {
+                            this.classList.remove('active-touch');
+                        } else {
+                            // 열려있는 다른 카드들을 먼저 다 닫기
+                            touchElements.forEach(item => item.classList.remove('active-touch'));
+                            // 클릭한 카드만 열기
+                            this.classList.add('active-touch');
+                        }
                     }
                 });
             });
