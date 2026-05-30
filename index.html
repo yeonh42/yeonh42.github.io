@@ -74,6 +74,19 @@
             .hero-body { flex-direction: column-reverse; align-items: center; text-align: center; }
             .hero-profile-img { width: 150px; margin-bottom: 2rem; }
             .personal-info { display: inline-block; text-align: left; }
+
+            .hover-overlay { 
+                display: none !important; 
+            }
+
+            .banner-content p span { 
+                display: none; 
+            }
+
+            .hover-review-box:active {
+                transform: scale(0.98);
+                transition: 0.1s;
+            }
         }
 
         .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 600px; margin: 0 auto; }
@@ -843,6 +856,26 @@
         function closeModal() {
             modal.classList.remove('active');
         }
+
+        const reviewBoxes = document.querySelectorAll('.hover-review-box');
+
+        reviewBoxes.forEach(box => {
+            box.addEventListener('click', () => {
+                const title = box.querySelector('h3').textContent.trim();
+                const review = box.querySelector('.hover-overlay p').textContent.trim();
+                
+                modalBody.innerHTML = `
+                    <h3 style="color: var(--point-color); margin-bottom: 5px; font-size: 1.2rem;">나의 감상평 ✍️</h3>
+                    <h4 style="font-size: 2rem; margin-bottom: 1.5rem; color: #fff; font-weight: 900;">${title}</h4>
+                    <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--point-color);">
+                        <p class="plot" style="margin-bottom: 0; color: #d2d2d2; line-height: 1.7; font-size: 1.05rem; word-break: keep-all;">${review}</p>
+                    </div>
+                    <div class="close-btn" style="margin-top: 2rem;" onclick="closeModal()">닫기</div>
+                `;
+
+                modal.classList.add('active');
+            });
+        });        
 
         genreFilters.forEach(filter => {
             filter.addEventListener('click', () => {
