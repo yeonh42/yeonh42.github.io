@@ -339,7 +339,6 @@
             .hashtag-result-box { min-height: 250px; padding: 3rem 1.5rem; }
             .review-container { flex-direction: column; }
             
-            /* [추가/수정] 모바일에서 호버 오버레이 비활성화 및 클릭 환경 최적화 */
             .hover-overlay { display: none !important; }
             .banner-content p span { display: none; }
             .hover-review-box:active { transform: scale(0.98); transition: 0.1s; }
@@ -411,12 +410,6 @@
             </ul>
 
             <div class="drama-list" id="genre-list"></div>
-
-            <div class="modal" id="info-modal">
-                <div class="modal-content">
-                    <div class="modal-body"></div>
-                </div>
-            </div>
         </section>
 
         <section id="my-drama" class="page">
@@ -563,6 +556,11 @@
 
             </div>            
         </section>
+        <div class="modal" id="info-modal">
+            <div class="modal-content">
+                <div class="modal-body"></div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -900,6 +898,7 @@
             });
         });
 
+        // [추가된 부분] 인생 드라마 카드 클릭(터치) 시 모달 띄우기 로직
         const reviewBoxes = document.querySelectorAll('.hover-review-box');
         
         reviewBoxes.forEach(box => {
