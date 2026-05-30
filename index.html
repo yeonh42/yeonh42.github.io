@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>조연희 - Drama Curator & Portfolio</title>
+    <title>yeonh SPA Homepage</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -70,25 +70,6 @@
 
         .hero-profile-img img { width: 100%; height: auto; display: block; }
 
-        @media (max-width: 768px) {
-            .hero-body { flex-direction: column-reverse; align-items: center; text-align: center; }
-            .hero-profile-img { width: 150px; margin-bottom: 2rem; }
-            .personal-info { display: inline-block; text-align: left; }
-
-            .hover-overlay { 
-                display: none !important; 
-            }
-
-            .banner-content p span { 
-                display: none; 
-            }
-
-            .hover-review-box:active {
-                transform: scale(0.98);
-                transition: 0.1s;
-            }
-        }
-
         .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 600px; margin: 0 auto; }
         .info-box { background: var(--bg-card); border-radius: var(--border-rad-md); padding: 2rem 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border: 1px solid var(--border-color); transition: all 0.3s; }
         .info-box:hover { transform: translateY(-5px); background: var(--bg-card-hover); border-color: #555; }
@@ -135,7 +116,6 @@
             transform: translateY(15px);
         }
         .banner-main .hover-overlay { padding: 3rem; }
-        .hover-review-box:hover .hover-overlay { opacity: 1; transform: translateY(0); }
         .review-label { color: var(--point-color); font-weight: 700; font-size: 0.9rem; margin-bottom: 10px; border: 1px solid var(--point-color); padding: 4px 8px; border-radius: 4px; display: inline-block; }
         .hover-overlay p { color: #d2d2d2; line-height: 1.7; font-size: 1.05rem; font-weight: 400; word-break: keep-all; }
 
@@ -148,7 +128,6 @@
                         url('https://i.namu.wiki/i/Y4YycceJzixPCEbuC3S5i_zqIAB2Ch4-ZOlxqj--hHsE0giWS-a7G4k4AJmDNa4KEUjMRnemTwO489JIA-MkFBdOlfha50auNfi6Srb2SV3vwrRBrSJwjYjy9lcrFIauAB-A8caweuFwrl6aKWOLYA.webp') center/cover no-repeat;
         }
         .banner-content { position: relative; z-index: 2; padding: 3rem; display: inline-block; transition: transform 0.3s; }
-        .banner-main:hover .banner-content { opacity: 0; }
 
         .banner-side { flex: 1; display: flex; flex-direction: column; gap: 1.5rem; }
 
@@ -162,12 +141,16 @@
             content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
             background: rgba(0,0,0,0.6); z-index: 0; transition: 0.3s;
         }
-        .side-box:hover::before { background: rgba(0,0,0,0.2); }
         .side-box-content { position: relative; z-index: 1; transition: transform 0.3s; display: flex; flex-direction: column; }
-        .side-box:hover .side-box-content { opacity: 0; }
-        .side-box:hover { border-color: var(--point-color); }
-        
         .side-box .hover-overlay p { font-size: 0.95rem; line-height: 1.5; }
+
+        @media (min-width: 769px) {
+            .hover-review-box:hover .hover-overlay { opacity: 1; transform: translateY(0); }
+            .banner-main:hover .banner-content { opacity: 0; }
+            .side-box:hover::before { background: rgba(0,0,0,0.2); }
+            .side-box:hover .side-box-content { opacity: 0; }
+            .side-box:hover { border-color: var(--point-color); }
+        }
 
         #side-box-1 { background: linear-gradient(to top, rgba(20,20,20,0.9) 0%, rgba(20,20,20,0.3) 100%), url('https://i.namu.wiki/i/YxqNW1Q6hw92F57RDiJwB6hGp1LAb5OLDs8o09XSQBi4PFKgvmps37vfWQIGVwFPRmi3GPY5phGp1sZQ3NohgGEHBSfv8sYSiXXuNUluBukDGQm1dVbsVPbrMhsHP_k1-oxIweFvU2GHCA6Rz5veZA.webp') center/cover no-repeat; }
         #side-box-2 { background: linear-gradient(to top, rgba(20,20,20,0.9) 0%, rgba(20,20,20,0.3) 100%), url('https://i.namu.wiki/i/Fx1KqXS3JBvqA5w5Jcv8t68fQup1DAeh8RhGjQ5CQOz4v3D_KA82zRPSHLafl6AIiY6JxsC0XBeUTZiL2HdErqgS5hZ-KGXuqicRFB7E_BctjtPrIKZK6CNSB2O8VpkR9qGxVUsuUIuUWHpysoDsqA.webp') center/cover no-repeat; }
@@ -197,7 +180,7 @@
             top: -20px; left: -20px; right: -20px; bottom: -20px;
             background-size: cover;
             background-position: center;
-            filter: blur(12px) brightness(0.35); /* 흐리게 + 어둡게 */
+            filter: blur(12px) brightness(0.35);
             z-index: 0;
             transition: opacity 0.5s ease, background-image 0.5s ease;
             opacity: 0;
@@ -355,6 +338,11 @@
             .tab-menu li { flex: 1 1 50%; border-bottom: 1px solid var(--border-color); }
             .hashtag-result-box { min-height: 250px; padding: 3rem 1.5rem; }
             .review-container { flex-direction: column; }
+            
+            /* [추가/수정] 모바일에서 호버 오버레이 비활성화 및 클릭 환경 최적화 */
+            .hover-overlay { display: none !important; }
+            .banner-content p span { display: none; }
+            .hover-review-box:active { transform: scale(0.98); transition: 0.1s; }
         }
     </style>
 </head>
@@ -736,7 +724,7 @@
             { title: '피라미드 게임', genre: 'thriller', plot: '한 달에 한 번 비밀투표로 왕따를 뽑는 백연여고 2학년 5반, “가해자, 피해자, 방관자”가 모두 섞여버린 그곳에서 점점 더 폭력에 빠져드는 학생들의 잔혹한 서바이벌 서열 전쟁', cast: '김지연, 장다아, 류다인, 신슬기, 강나언', rating: '(OTT)', img: 'https://i.namu.wiki/i/GdgqCH_2OST3jBTSs3WWl8cVb2n0_quYupKhWBt7N8xKi0-fp1WEDNmfTpGW4o-_kgc5hFCyYjUxlg_2EOV1cMfOpwtk85hyXSPwdKefq7bfFkH_nHD8Az1bhUHlYH92ROkZ6BsUN3liAwJrETR6dg.webp' },
             { title: '보이스', genre: 'thriller', plot: '범죄 현장의 골든타임을 사수하는 112 신고센터 대원들의 치열한 기록을 그린 드라마', cast: '이하나, 장혁, 김재욱', rating: '5.7%', img: 'https://i.namu.wiki/i/Fnu5sCwP_wEy_htmbK8u1HLZJoke0y4KZHDR_zFcfA-nxc1bM12N9rGJ307QFK1Y71HmVt5JIDnYsjY0G_37FSCED_MCvSPK_PSHKxuKfDzCMvX6281LVz6i4exkib-Xl0vlCBM--MRwvmnw3aYcGw.webp' },
             { title: '시그널', genre: 'thriller', plot: '"우리의 시간은 이어져있다." 과거로부터 걸려온 간절한 신호(무전)로 연결된 현재와 과거의 형사들이 오래된 미제 사건들을 다시 파헤친다!', cast: '이제훈, 김혜수, 조진웅', rating: '12.5%', img: 'https://i.namu.wiki/i/Q2lPtJAPly5_T3VdrM66_Q0OCrNVhHLZQxUtFBvBGCsgENAyZ88T4YWcFxigzfDenSqYQF35P9umbJYC7gYhEvhVeZ3WON7e32HhcTSKxN9Mb8J6bZagskALxyVMm73sg1jCmRoirGU0h6qZCAR-hA.webp' },
-            { title: 'SKY 캐슬', genre: 'thriller', plot: '대한민국 상위 0.1%가 모여 사는 SKY 캐슬 안에서 남편은 왕으로, 제 자식은 천하제일 왕자와 공주로 키우고 싶은 명문가 출신 사모님들의 처절한 욕망을 샅샅이 들여다보는 리얼 코믹 풍자 드라마', cast: '염정아, 김서형, 이태란, 정준호, 최원영', rating: '23.8%', img: 'https://i.namu.wiki/i/mV1L1FWLdPm4qmwqDt3NIopeN0Ooeqmkn079pwoYDZQVPMhDmMf2epJoX-95Jpr0O_-P5ZL1L7iQC6KmWVno8gbfUZM2qwWgVu0a0-j8KF3vS1UREhab25BaOt9JULgp4FDzr40K_GP-SXCKbnEIQA.webp' },
+            { title: 'SKY 캐슬', genre: 'thriller', plot: '대한민국 상위 0.1%가 모여 사는 SKY 캐슬 안에서 남편은 왕으로, 제 자식은 천하제일 왕자와 공주로 키 키우고 싶은 명문가 출신 사모님들의 처절한 욕망을 샅샅이 들여다보는 리얼 코믹 풍자 드라마', cast: '염정아, 김서형, 이태란, 정준호, 최원영', rating: '23.8%', img: 'https://i.namu.wiki/i/mV1L1FWLdPm4qmwqDt3NIopeN0Ooeqmkn079pwoYDZQVPMhDmMf2epJoX-95Jpr0O_-P5ZL1L7iQC6KmWVno8gbfUZM2qwWgVu0a0-j8KF3vS1UREhab25BaOt9JULgp4FDzr40K_GP-SXCKbnEIQA.webp' },
             { title: 'VIP', genre: 'thriller', plot: '백화점 상위 1% VIP 고객을 관리하는 전담팀 사람들의 비밀스러운 프라이빗 오피스 멜로', cast: '장나라, 이상윤, 이청아, 곽선영, 표예진, 신재하', rating: '15.9%', img: 'https://i.namu.wiki/i/rsXvrAUXiysqIY7QMCqyvTp4ESl-k3M7uEVqR0zKb7bhfEdmh7ATZICQJpBqdEW4k1SROsgJ83BFrQlaz62IE7p7pUI2jVn-D6b5UNyHaD44PPZs65Yhwh_gssytVmZkWEdJbLUO0SmCygtn4dF88g.webp' },
             { title: '황후의 품격', genre: 'thriller', plot: '어느 날 갑자기 신데렐라가 돼 황제에게 시집온 명랑 발랄 뮤지컬 배우가 궁의 절대 권력과 맞서 싸우다가 대왕대비 살인사건을 계기로 황실을 무너뜨리고 진정한 사랑과 행복을 찾는 이야기', cast: '장나라, 최진혁, 신성록, 이엘리야, 신은경', rating: '17.9%', img: 'https://i.namu.wiki/i/RFc7pf2QctvSkj58X31HqEyjZdL8fp-itBtPdVR9SgNKRIighYqpPb1oyuOB9mNZTA3-4cW6krLVaD0Mw0vyOAWpZKFcwqK0ctO8BGYBWD28SB6IHQoJoFulks9lEdzd3CP51MAQaXvJ4Y_PMWgu5Q.webp' },
             { title: '굿보이', genre: 'thriller', plot: '특채로 경찰이 된 메달리스트들이 메달 대신 경찰 신분증을 목에 걸고 비양심과 반칙이 판치는 세상에 맞서 싸우는 코믹 액션 청춘 수사극', cast: '박보검, 김소현, 오정세, 이상이, 허성태', rating: '8.1%', img: 'https://i.namu.wiki/i/_5e9SNOi9OAOwyYZsptJ2JfgLFE8PbzNegWHRHUzLKWzEEHkSk_IGyHChpPG9VMlyRdhjEjuhIvp1Lr_bsVzS7zmDgdL-pBGe_rx6OgraY8I4-gr6GUV-TxhQ39b0MChaghguD_ZoTRQ6IGIn41oXg.webp' },
@@ -857,26 +845,6 @@
             modal.classList.remove('active');
         }
 
-        const reviewBoxes = document.querySelectorAll('.hover-review-box');
-
-        reviewBoxes.forEach(box => {
-            box.addEventListener('click', () => {
-                const title = box.querySelector('h3').textContent.trim();
-                const review = box.querySelector('.hover-overlay p').textContent.trim();
-                
-                modalBody.innerHTML = `
-                    <h3 style="color: var(--point-color); margin-bottom: 5px; font-size: 1.2rem;">나의 감상평 ✍️</h3>
-                    <h4 style="font-size: 2rem; margin-bottom: 1.5rem; color: #fff; font-weight: 900;">${title}</h4>
-                    <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--point-color);">
-                        <p class="plot" style="margin-bottom: 0; color: #d2d2d2; line-height: 1.7; font-size: 1.05rem; word-break: keep-all;">${review}</p>
-                    </div>
-                    <div class="close-btn" style="margin-top: 2rem;" onclick="closeModal()">닫기</div>
-                `;
-
-                modal.classList.add('active');
-            });
-        });        
-
         genreFilters.forEach(filter => {
             filter.addEventListener('click', () => {
                 genreFilters.forEach(f => f.classList.remove('active'));
@@ -928,6 +896,27 @@
                     hashtagBg.style.opacity = '1';
                 } else {
                     hashtagBg.style.opacity = '0';
+                }
+            });
+        });
+
+        const reviewBoxes = document.querySelectorAll('.hover-review-box');
+        
+        reviewBoxes.forEach(box => {
+            box.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    const title = this.querySelector('h3').textContent.trim();
+                    const review = this.querySelector('.hover-overlay p').textContent.trim();
+                    
+                    modalBody.innerHTML = `
+                        <h3 style="color: var(--point-color); margin-bottom: 5px; font-size: 1.2rem;">나의 감상평 ✍️</h3>
+                        <h4 style="font-size: 2rem; margin-bottom: 1.5rem; color: #fff; font-weight: 900;">${title}</h4>
+                        <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--point-color);">
+                            <p class="plot" style="margin-bottom: 0; color: #d2d2d2; line-height: 1.7; font-size: 1.05rem; word-break: keep-all;">${review}</p>
+                        </div>
+                        <div class="close-btn" style="margin-top: 2rem;" onclick="closeModal()">닫기</div>
+                    `;
+                    modal.classList.add('active');
                 }
             });
         });
